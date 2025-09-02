@@ -12,12 +12,12 @@
 
     <name>Spark ETL Framework</name>
 
-    <url>https://github.com/amitnema/generic-etl-framework.git</url>
+    <url>https://github.com/amitnema/spark-etl-framework.git</url>
     <inceptionYear>2023</inceptionYear>
     <description><![CDATA[Generic multimodule framework for ETL processes using Apache Spark]]></description>
     <scm>
-        <connection>scm:git:git@github.com:amitnema/generic-etl-framework.git</connection>
-        <url>scm:git:git@github.com:amitnema/generic-etl-framework.git</url>
+        <connection>scm:git:git@github.com:amitnema/spark-etl-framework.git</connection>
+        <url>scm:git:git@github.com:amitnema/spark-etl-framework.git</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
