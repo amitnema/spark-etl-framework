@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Spark session configuration and management
+ * Spark session configuration and management.
+ * @author Amit Prakash Nema
  */
 public class SparkConfig {
     private static final Logger logger = LoggerFactory.getLogger(SparkConfig.class);
@@ -14,6 +15,11 @@ public class SparkConfig {
     private static SparkSession sparkSession;
     private static final ConfigurationManager config = ConfigurationManager.getInstance();
 
+    /**
+     * Gets the singleton SparkSession instance, creating it if it doesn't exist.
+     *
+     * @return The SparkSession instance.
+     */
     public static synchronized SparkSession getSparkSession() {
         if (sparkSession == null) {
             sparkSession = createSparkSession();
@@ -21,6 +27,11 @@ public class SparkConfig {
         return sparkSession;
     }
 
+    /**
+     * Creates a new SparkSession based on the application configuration.
+     *
+     * @return A new SparkSession.
+     */
     private static SparkSession createSparkSession() {
         String appName = config.getProperty("spark.app.name", "ETL-Framework");
         String master = config.getProperty("spark.master", "local[*]");
@@ -43,6 +54,11 @@ public class SparkConfig {
             .getOrCreate();
     }
 
+    /**
+     * Adds cloud-specific configurations to the SparkConf.
+     *
+     * @param conf The SparkConf to add the configuration to.
+     */
     private static void addCloudConfiguration(SparkConf conf) {
         String cloudProvider = config.getProperty("cloud.provider", "local");
 
@@ -61,9 +77,14 @@ public class SparkConfig {
         }
     }
 
+    /**
+     * Adds AWS-specific configurations to the SparkConf.
+     *
+     * @param conf The SparkConf to add the configuration to.
+     */
     private static void addAWSConfiguration(SparkConf conf) {
         conf.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
-        conf.set("spark.hadoop.fs.s3a.aws.credentials.provider", 
+        conf.set("spark.hadoop.fs.s3a.aws.credentials.provider",
             "com.amazonaws.auth.DefaultAWSCredentialsProviderChain");
 
         String accessKey = config.getProperty("aws.access.key");
@@ -77,6 +98,11 @@ public class SparkConfig {
         logger.info("AWS configuration applied");
     }
 
+    /**
+     * Adds GCP-specific configurations to the SparkConf.
+     *
+     * @param conf The SparkConf to add the configuration to.
+     */
     private static void addGCPConfiguration(SparkConf conf) {
         String serviceAccountKey = config.getProperty("gcp.service.account.key");
         if (serviceAccountKey != null) {
@@ -89,6 +115,11 @@ public class SparkConfig {
         logger.info("GCP configuration applied");
     }
 
+    /**
+     * Adds Azure-specific configurations to the SparkConf.
+     *
+     * @param conf The SparkConf to add the configuration to.
+     */
     private static void addAzureConfiguration(SparkConf conf) {
         String storageAccount = config.getProperty("azure.storage.account");
         String accessKey = config.getProperty("azure.storage.access.key");
@@ -100,6 +131,9 @@ public class SparkConfig {
         logger.info("Azure configuration applied");
     }
 
+    /**
+     * Closes the existing SparkSession if it's running.
+     */
     public static void closeSparkSession() {
         if (sparkSession != null) {
             sparkSession.close();

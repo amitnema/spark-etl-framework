@@ -10,11 +10,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 /**
- * Database data writer implementation
+ * Database data writer implementation.
+ * @author Amit Prakash Nema
  */
 public class DatabaseDataWriter implements DataWriter {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataWriter.class);
 
+    /**
+     * Writes a Spark Dataset to a database table.
+     *
+     * @param dataset The Dataset to write.
+     * @param config  The output configuration specifying connection details, table name, etc.
+     * @throws IllegalArgumentException if the connection string or table name is missing.
+     */
     @Override
     public void write(Dataset<Row> dataset, OutputConfig config) {
         String connectionString = config.getConnectionString();
@@ -35,7 +43,7 @@ public class DatabaseDataWriter implements DataWriter {
 
         // Add connection properties from options
         if (config.getOptions() != null) {
-            config.getOptions().forEach((key, value) -> 
+            config.getOptions().forEach((key, value) ->
                 connectionProps.setProperty(key, String.valueOf(value)));
         }
 
@@ -44,6 +52,12 @@ public class DatabaseDataWriter implements DataWriter {
             .jdbc(connectionString, tableName, connectionProps);
     }
 
+    /**
+     * Converts a string representation of a save mode to the Spark SaveMode enum.
+     *
+     * @param mode The save mode as a string (e.g., "overwrite", "append").
+     * @return The corresponding Spark SaveMode enum. Defaults to ErrorIfExists.
+     */
     private SaveMode getSaveMode(String mode) {
         if (mode == null) return SaveMode.ErrorIfExists;
 
@@ -51,7 +65,7 @@ public class DatabaseDataWriter implements DataWriter {
             case "overwrite": return SaveMode.Overwrite;
             case "append": return SaveMode.Append;
             case "ignore": return SaveMode.Ignore;
-            case "error": 
+            case "error":
             default: return SaveMode.ErrorIfExists;
         }
     }

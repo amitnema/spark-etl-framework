@@ -24,6 +24,7 @@ import java.util.Map;
 
 /**
  * Main ETL processing engine
+ * @author Amit Prakash Nema
  */
 public class ETLEngine {
     private static final Logger logger = LoggerFactory.getLogger(ETLEngine.class);
@@ -86,7 +87,7 @@ public class ETLEngine {
 
                 datasets.put(inputConfig.getName(), dataset);
 
-                logger.info("Successfully read input: {} with {} records", 
+                logger.info("Successfully read input: {} with {} records",
                     inputConfig.getName(), dataset.count());
 
             } catch (Exception e) {

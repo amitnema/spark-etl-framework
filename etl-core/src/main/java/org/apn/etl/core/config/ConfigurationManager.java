@@ -13,7 +13,11 @@ import java.util.Objects;
 import java.util.Properties;
 
 /**
- * Central configuration manager for ETL framework
+ * Central configuration manager for the ETL framework.
+ * This class handles loading configuration from `application.properties` and `job-config.yaml`.
+ * It follows the singleton pattern to ensure a single point of access to configuration.
+ *
+ * @author Amit Prakash Nema
  */
 public class ConfigurationManager {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
@@ -22,10 +26,19 @@ public class ConfigurationManager {
     private Properties properties;
     private Map<String, Object> jobConfig;
 
+    /**
+     * Private constructor to enforce the singleton pattern.
+     * Initializes the configuration by calling {@link #loadConfiguration()}.
+     */
     private ConfigurationManager() {
         loadConfiguration();
     }
 
+    /**
+     * Gets the singleton instance of the ConfigurationManager.
+     *
+     * @return The singleton ConfigurationManager instance.
+     */
     public static synchronized ConfigurationManager getInstance() {
         if (instance == null) {
             instance = new ConfigurationManager();
@@ -33,6 +46,9 @@ public class ConfigurationManager {
         return instance;
     }
 
+    /**
+     * Loads configuration from `application.properties` and `job-config.yaml` from the classpath.
+     */
     private void loadConfiguration() {
         // Load application.properties
         properties = new Properties();
@@ -55,18 +71,44 @@ public class ConfigurationManager {
         }
     }
 
+    /**
+     * Gets a property value from the loaded `application.properties`.
+     *
+     * @param key The property key.
+     * @return The property value, or null if not found.
+     */
     public String getProperty(String key) {
         return getProperty(key, null);
     }
 
+    /**
+     * Gets a property value from the loaded `application.properties`.
+     *
+     * @param key          The property key.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return The property value, or the default value if not found.
+     */
     public String getProperty(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
     }
 
+    /**
+     * Gets the entire job configuration loaded from `job-config.yaml` as a Map.
+     *
+     * @return A map representing the job configuration.
+     */
     public Map<String, Object> getJobConfig() {
         return jobConfig;
     }
 
+    /**
+     * Gets a specific value from the job configuration using a dot-separated path.
+     *
+     * @param path The dot-separated path to the desired value (e.g., "job.name").
+     * @param type The expected type of the value.
+     * @param <T>  The generic type of the value.
+     * @return The configuration value cast to the specified type, or null if not found.
+     */
     @SuppressWarnings("unchecked")
     public <T> T getJobConfigValue(String path, Class<T> type) {
         String[] keys = path.split("\\.");
@@ -83,6 +125,12 @@ public class ConfigurationManager {
         return type.cast(current);
     }
 
+    /**
+     * Sets a property value. This will only affect the in-memory properties for the current run.
+     *
+     * @param key   The property key to set.
+     * @param value The property value to set.
+     */
     public void setProperty(String key, String value) {
         properties.setProperty(key, value);
     }

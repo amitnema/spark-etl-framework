@@ -12,11 +12,19 @@ import org.slf4j.LoggerFactory;
 import static org.apn.etl.core.utils.ETLUtils.toStringMap;
 
 /**
- * File-based data writer implementation
+ * File-based data writer implementation.
+ * @author Amit Prakash Nema
  */
 public class FileDataWriter implements DataWriter {
     private static final Logger logger = LoggerFactory.getLogger(FileDataWriter.class);
 
+    /**
+     * Writes a Spark Dataset to a file-based destination.
+     *
+     * @param dataset The Dataset to write.
+     * @param config  The output configuration specifying format, path, save mode, etc.
+     * @throws IllegalArgumentException if the file format in the config is not supported.
+     */
     @Override
     public void write(Dataset<Row> dataset, OutputConfig config) {
         String format = config.getFormat().toLowerCase();
@@ -55,6 +63,12 @@ public class FileDataWriter implements DataWriter {
         }
     }
 
+    /**
+     * Converts a string representation of a save mode to the Spark SaveMode enum.
+     *
+     * @param mode The save mode as a string (e.g., "overwrite", "append").
+     * @return The corresponding Spark SaveMode enum. Defaults to ErrorIfExists.
+     */
     private SaveMode getSaveMode(String mode) {
         if (mode == null) return SaveMode.ErrorIfExists;
 
@@ -62,11 +76,18 @@ public class FileDataWriter implements DataWriter {
             case "overwrite": return SaveMode.Overwrite;
             case "append": return SaveMode.Append;
             case "ignore": return SaveMode.Ignore;
-            case "error": 
+            case "error":
             default: return SaveMode.ErrorIfExists;
         }
     }
 
+    /**
+     * Applies partitioning to the DataFrameWriter based on the provided configuration.
+     *
+     * @param writer    The DataFrameWriter to configure.
+     * @param partition The partitioning configuration.
+     * @return The configured DataFrameWriter.
+     */
     private DataFrameWriter<Row> applyPartitioning(DataFrameWriter<Row> writer, PartitionConfig partition) {
         if (partition.getColumns() != null && !partition.getColumns().isEmpty()) {
             return writer.partitionBy(partition.getColumns().toArray(new String[0]));

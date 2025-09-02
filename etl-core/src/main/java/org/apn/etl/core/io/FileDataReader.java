@@ -11,11 +11,19 @@ import org.slf4j.LoggerFactory;
 import static org.apn.etl.core.utils.ETLUtils.toStringMap;
 
 /**
- * File-based data reader implementation
+ * File-based data reader implementation.
+ * @author Amit Prakash Nema
  */
 public class FileDataReader implements DataReader {
     private static final Logger logger = LoggerFactory.getLogger(FileDataReader.class);
 
+    /**
+     * Reads data from a file source based on the provided configuration.
+     *
+     * @param config The input configuration for the file source.
+     * @return A Spark Dataset containing the data from the file.
+     * @throws IllegalArgumentException if the file format in the config is not supported.
+     */
     @Override
     public Dataset<Row> read(InputConfig config) {
         SparkSession spark = SparkConfig.getSparkSession();

@@ -11,11 +11,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 /**
- * Database data reader implementation
+ * Database data reader implementation.
+ * @author Amit Prakash Nema
  */
 public class DatabaseDataReader implements DataReader {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDataReader.class);
 
+    /**
+     * Reads data from a database source based on the provided configuration.
+     *
+     * @param config The input configuration for the database source.
+     * @return A Spark Dataset containing the data from the database.
+     * @throws IllegalArgumentException if the connection string is missing.
+     */
     @Override
     public Dataset<Row> read(InputConfig config) {
         SparkSession spark = SparkConfig.getSparkSession();
@@ -33,7 +41,7 @@ public class DatabaseDataReader implements DataReader {
 
         // Add connection properties from options
         if (config.getOptions() != null) {
-            config.getOptions().forEach((key, value) -> 
+            config.getOptions().forEach((key, value) ->
                 connectionProps.setProperty(key, String.valueOf(value)));
         }
 

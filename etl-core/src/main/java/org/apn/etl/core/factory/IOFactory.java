@@ -10,11 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Factory for creating data readers and writers
+ * Factory for creating data readers and writers.
+ * This class provides static methods to instantiate appropriate data reader and writer
+ * implementations based on the specified type.
+ *
+ * @author Amit Prakash Nema
  */
 public class IOFactory {
     private static final Logger logger = LoggerFactory.getLogger(IOFactory.class);
 
+    /**
+     * Creates a {@link DataReader} instance based on the specified type.
+     *
+     * @param type The type of the reader to create (e.g., "file", "database").
+     * @return A {@link DataReader} instance.
+     * @throws IllegalArgumentException if the reader type is not supported.
+     */
     public static DataReader createReader(String type) {
         logger.info("Creating reader for type: {}", type);
 
@@ -30,6 +41,13 @@ public class IOFactory {
         }
     }
 
+    /**
+     * Creates a {@link DataWriter} instance based on the specified type.
+     *
+     * @param type The type of the writer to create (e.g., "file", "database").
+     * @return A {@link DataWriter} instance.
+     * @throws IllegalArgumentException if the writer type is not supported.
+     */
     public static DataWriter createWriter(String type) {
         logger.info("Creating writer for type: {}", type);
 
