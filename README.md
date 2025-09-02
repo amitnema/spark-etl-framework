@@ -1,3 +1,7 @@
+[![Java CI with Maven](https://github.com/amitnema/spark-etl-framework/actions/workflows/maven.yml/badge.svg)](https://github.com/amitnema/spark-etl-framework/actions/workflows/maven.yml)
+[![codecov](https://codecov.io/gh/amitnema/spark-etl-framework/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/amitnema/spark-etl-framework)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 # Spark ETL Framework
 
 A generic, multimodule framework for building scalable ETL (Extract, Transform, Load) processes using Apache Spark and Java. This framework is designed to be cloud-agnostic, maintainable, testable, and production-ready.

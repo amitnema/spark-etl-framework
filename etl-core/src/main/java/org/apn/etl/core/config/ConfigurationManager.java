@@ -1,5 +1,6 @@
 package org.apn.etl.core.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -36,7 +38,7 @@ public class ConfigurationManager {
         properties = new Properties();
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
             if (is != null) {
-                properties.load(is);
+                Objects.requireNonNull(properties, "properties file must not be " + properties).load(is);
             }
         } catch (IOException e) {
             logger.error("Error loading application.properties", e);
@@ -46,7 +48,7 @@ public class ConfigurationManager {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("job-config.yaml")) {
             if (is != null) {
                 ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-                jobConfig = mapper.readValue(is, Map.class);
+                jobConfig = mapper.readValue(is, new TypeReference<>() {});
             }
         } catch (IOException e) {
             logger.error("Error loading job-config.yaml", e);
