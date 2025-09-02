@@ -4,19 +4,41 @@
 
 # Spark ETL Framework
 
-A generic, multimodule framework for building scalable ETL (Extract, Transform, Load) processes using Apache Spark and Java. This framework is designed to be cloud-agnostic, maintainable, testable, and production-ready.
+**Author:** Amit Prakash Nema
+
+A generic, multimodule framework for building scalable ETL (Extract, Transform, Load) processes using Apache Spark and
+Java. This framework is designed to be cloud-agnostic, maintainable, testable, and production-ready.
 
 ## Architecture Overview
 
 The framework follows enterprise design patterns and consists of the following modules:
 
-- **etl-core**: Core framework components including configuration, validation, transformation interfaces, and I/O operations
+- **etl-core**: Core framework components including configuration, validation, transformation interfaces, and I/O
+  operations
 - **etl-jobs**: Concrete job implementations and custom transformers
+
+## Architecture Diagram
+
+```mermaid
+flowchart TD
+    A[Job Config] --> B[ETLEngine]
+    B --> C[Reader]
+    B --> D[Transformer]
+    B --> E[Writer]
+    B --> F[Validation]
+    B --> G[Monitoring]
+    B --> H[Cloud Integration]
+    C -->|Reads Data| D
+    D -->|Transforms Data| E
+    E -->|Writes Data| F
+    F -->|Validates| G
+    G -->|Monitors| H
+```
 
 ## Key Features
 
 - ✅ **Cloud Agnostic**: Supports AWS S3, Google Cloud Storage, Azure Blob Storage
-- ✅ **Modular Design**: Separation of concerns with pluggable components  
+- ✅ **Modular Design**: Separation of concerns with pluggable components
 - ✅ **Configuration-Driven**: YAML-based job configuration with parameter substitution
 - ✅ **Data Validation**: Built-in validation rules (NOT_NULL, UNIQUE, RANGE, REGEX)
 - ✅ **Multiple Data Sources**: File systems, databases (JDBC), streaming sources
@@ -62,42 +84,54 @@ spark-etl-framework/
 ## Getting Started
 
 ### Prerequisites
+
 - Java 11 (or higher)
 - Maven 3.6+
 - Docker (for containerized deployment)
 
 ### Build & Test
+
 ```sh
 mvn clean verify
 ```
+
 This runs all unit/integration tests, code quality checks, coverage, and security scans.
 
 ### Configuration
+
 All configuration values can be overridden via environment variables. Example:
+
 ```sh
 export DATABASE_URL="jdbc:postgresql://prod-db:5432/etl_db"
 export AWS_ACCESS_KEY="your-access-key"
 export AWS_SECRET_KEY="your-secret-key"
 ```
-See `src/main/resources/application.properties` and `etl-jobs/src/main/resources/jobs/sample-job/job-config.yaml` for all available variables.
+
+See `src/main/resources/application.properties` and `etl-jobs/src/main/resources/jobs/sample-job/job-config.yaml` for
+all available variables.
 
 ### Running Locally
+
 ```sh
 java -jar etl-jobs/target/etl-jobs-*.jar
 ```
 
 ### Running with Docker
+
 Build and run the container:
+
 ```sh
 docker build -t etl-framework:latest -f docker/Dockerfile .
 docker run --rm -e DATABASE_URL="jdbc:postgresql://prod-db:5432/etl_db" etl-framework:latest
 ```
 
 ### CI/CD Workflows
+
 - **Build, Test, Quality, Security**: See `.github/workflows/maven.yml`
 - **Docker Build & Publish**: See `.github/workflows/docker.yml`
 
 ### Cloud Agnostic Deployment
+
 - Supports AWS, GCP, Azure, and local deployments via environment variables.
 - Containerized for Kubernetes, Docker Compose, or serverless platforms.
 
@@ -223,14 +257,17 @@ Adjust memory settings in spark-submit script:
 ```
 
 ## Contributing
+
 - Fork the repo and create a feature branch.
 - Run `mvn clean verify` before submitting a PR.
 - Ensure new code is covered by tests and passes code quality checks.
 
 ## License
+
 Apache 2.0
 
 ## Contact
+
 For questions or support, open an issue or contact the maintainer
 
 ## Roadmap
