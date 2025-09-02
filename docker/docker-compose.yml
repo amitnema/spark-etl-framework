@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  etl-framework:
+    build: .
+    container_name: etl-framework
+    volumes:
+      - ./data:/data
+      - ./logs:/opt/etl-framework/logs
+    environment:
+      - SPARK_MASTER=local[*]
+      - ETL_ENV=docker
+    networks:
+      - etl-network
+
+  # Optional: Add databases for testing
+  postgres:
+    image: postgres:13
+    container_name: etl-postgres
+    environment:
+      POSTGRES_DB: etl_db
+      POSTGRES_USER: etl_user
+      POSTGRES_PASSWORD: etl_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - etl-network
+
+  # Optional: Add MinIO for S3-compatible storage
+  minio:
+    image: minio/minio:latest
+    container_name: etl-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - etl-network
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  etl-network:
+    driver: bridge

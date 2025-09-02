@@ -1,0 +1,47 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0
+                              http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>job-distribution</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <!-- Include the fat JAR -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <includes>
+                <include>etl-jobs-*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-sources.jar</exclude>
+                <exclude>*-javadoc.jar</exclude>
+                <exclude>original-*.jar</exclude>
+            </excludes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+
+        <!-- Include configuration files -->
+        <fileSet>
+            <directory>src/main/resources/jobs/sample-job</directory>
+            <includes>
+                <include>application.properties</include>
+                <include>job-config.yaml</include>
+                <include>logback.xml</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+
+        <!-- Include submission script -->
+        <fileSet>
+            <directory>${project.parent.basedir}/dist/sample-job</directory>
+            <includes>
+                <include>spark-submit.sh</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>755</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>
