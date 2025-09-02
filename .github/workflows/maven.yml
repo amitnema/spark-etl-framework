@@ -1,42 +1,39 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Java CI with Maven
-
+name: Build, Test, and Quality
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        java: [11]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: ${{ matrix.java }}
           distribution: 'temurin'
+          cache: maven
+      - name: Build and Test
+        run: mvn clean verify
+      - name: Code Coverage (JaCoCo)
+        run: mvn jacoco:report
+      - name: Code Quality (SpotBugs, Checkstyle, PMD)
+        run: mvn spotbugs:check checkstyle:check pmd:check
+      - name: Security Scan (OWASP Dependency Check)
+        run: mvn org.owasp:dependency-check-maven:check
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/target/surefire-reports/'
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: '**/target/site/jacoco/'
 
-      - name: Build with Maven
-        run: mvn clean install --batch-mode
-
-      - name: Generate dependency graph
-        run: |
-          echo "Generating dependency graph..."
-          mvn depgraph:graph || echo "Depgraph failed, skipping snapshot"
-
-      - name: Parse dependency graph (optional)
-        run: |
-          echo "Parsing dependency graph..."
-          node scripts/parse-deps.js || echo "Parsing failed, check format or plugin output"

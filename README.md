@@ -59,74 +59,47 @@ spark-etl-framework/
 5. **Singleton Pattern**: For configuration management
 6. **Command Pattern**: For job execution
 
-## Quick Start
+## Getting Started
 
 ### Prerequisites
+- Java 11 (or higher)
+- Maven 3.6+
+- Docker (for containerized deployment)
 
-- Java 11 or higher
-- Apache Maven 3.6+
-- Apache Spark 3.4.0
-- Docker (optional)
+### Build & Test
+```sh
+mvn clean verify
+```
+This runs all unit/integration tests, code quality checks, coverage, and security scans.
 
-### Building the Framework
+### Configuration
+All configuration values can be overridden via environment variables. Example:
+```sh
+export DATABASE_URL="jdbc:postgresql://prod-db:5432/etl_db"
+export AWS_ACCESS_KEY="your-access-key"
+export AWS_SECRET_KEY="your-secret-key"
+```
+See `src/main/resources/application.properties` and `etl-jobs/src/main/resources/jobs/sample-job/job-config.yaml` for all available variables.
 
-```bash
-# Clone the repository
-git clone <repository-url>
-cd spark-etl-framework
-
-# Build the project
-mvn clean package
-
-# Or use the build script
-./scripts/build.sh
+### Running Locally
+```sh
+java -jar etl-jobs/target/etl-jobs-*.jar
 ```
 
-### Running Sample Job
-
-```bash
-# Navigate to the distribution directory
-cd dist/sample-job/
-
-# Execute the job
-./spark-submit.sh --master local[*] --config job-config.yaml
+### Running with Docker
+Build and run the container:
+```sh
+docker build -t etl-framework:latest -f docker/Dockerfile .
+docker run --rm -e DATABASE_URL="jdbc:postgresql://prod-db:5432/etl_db" etl-framework:latest
 ```
 
-### Custom Job Configuration
+### CI/CD Workflows
+- **Build, Test, Quality, Security**: See `.github/workflows/maven.yml`
+- **Docker Build & Publish**: See `.github/workflows/docker.yml`
 
-Create a `job-config.yaml` file:
-
-```yaml
-jobName: "my-etl-job"
-jobDescription: "Custom ETL job"
-jobVersion: "1.0.0"
-
-inputs:
-  - name: "source_data"
-    type: "file"
-    format: "parquet"
-    path: "s3a://my-bucket/input/data.parquet"
-
-transformation:
-  className: "org.apn.etl.jobs.custom.MyTransformer"
-  parameters:
-    filterDate: "2023-01-01"
-    outputFormat: "processed"
-
-outputs:
-  - name: "processed_data"
-    type: "file"
-    format: "parquet"
-    path: "s3a://my-bucket/output/processed.parquet"
-    mode: "overwrite"
-
-validation:
-  enabled: true
-  rules:
-    - name: "check_not_null_id"
-      type: "NOT_NULL"
-      column: "id"
-```
+### Cloud Agnostic Deployment
+- Supports AWS, GCP, Azure, and local deployments via environment variables.
+- Containerized for Kubernetes, Docker Compose, or serverless platforms.
 
 ## Development Guide
 
@@ -250,24 +223,15 @@ Adjust memory settings in spark-submit script:
 ```
 
 ## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Implement your changes
-4. Add comprehensive tests
-5. Update documentation
-6. Submit a pull request
+- Fork the repo and create a feature branch.
+- Run `mvn clean verify` before submitting a PR.
+- Ensure new code is covered by tests and passes code quality checks.
 
 ## License
+Apache 2.0
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For support and questions:
-- Create an issue in the repository
-- Check the [Wiki](wiki-url) for additional documentation
-- Contact the development team
+## Contact
+For questions or support, open an issue or contact the maintainer
 
 ## Roadmap
 
