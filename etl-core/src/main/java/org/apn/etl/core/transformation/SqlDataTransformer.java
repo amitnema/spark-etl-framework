@@ -8,10 +8,29 @@ import org.apn.etl.core.config.SparkConfig;
 import java.util.Map;
 
 /**
- * SQL-based data transformer
+ * SQL-based data transformer for executing custom SQL queries on Spark datasets.
+ * <p>
+ * This transformer creates a temporary view from the input dataset and executes the provided SQL query.
+ * </p>
+ *
+ * <b>Parameters:</b>
+ * <ul>
+ *   <li>sql - The SQL query to execute (required)</li>
+ *   <li>tempViewName - The name of the temporary view (optional, default: "input_data")</li>
+ * </ul>
+ *
+ * @author Amit Prakash Nema
  */
 public class SqlDataTransformer extends AbstractDataTransformer {
-
+    /**
+     * Executes the SQL transformation on the input dataset.
+     *
+     * @param input      Input dataset
+     * @param parameters Transformation parameters (must include "sql")
+     * @return Transformed dataset after SQL execution
+     * @throws IllegalArgumentException if SQL query is missing
+     * @throws RuntimeException if SQL execution fails
+     */
     @Override
     protected Dataset<Row> doTransform(Dataset<Row> input, Map<String, Object> parameters) {
         SparkSession spark = SparkConfig.getSparkSession();

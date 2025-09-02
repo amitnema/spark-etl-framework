@@ -4,7 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Result of data validation
+ * Result of data validation in the ETL framework.
+ * <p>
+ * Contains validation status, error details, metrics, and record counts.
+ * </p>
+ *
+ * @author Amit Prakash Nema
  */
 public class ValidationResult {
     private boolean isValid;
@@ -19,21 +24,65 @@ public class ValidationResult {
         this.isValid = isValid;
     }
 
+    /**
+     * Gets the validation status.
+     * @return true if valid, false otherwise
+     */
     public boolean isValid() { return isValid; }
+    /**
+     * Sets the validation status.
+     * @param valid true if valid, false otherwise
+     */
     public void setValid(boolean valid) { isValid = valid; }
 
+    /**
+     * Gets the list of validation errors.
+     * @return list of errors
+     */
     public List<ValidationError> getErrors() { return errors; }
+    /**
+     * Sets the list of validation errors.
+     * @param errors list of errors
+     */
     public void setErrors(List<ValidationError> errors) { this.errors = errors; }
 
+    /**
+     * Gets validation metrics.
+     * @return metrics map
+     */
     public Map<String, Object> getMetrics() { return metrics; }
+    /**
+     * Sets validation metrics.
+     * @param metrics metrics map
+     */
     public void setMetrics(Map<String, Object> metrics) { this.metrics = metrics; }
 
+    /**
+     * Gets the number of records processed.
+     * @return processed record count
+     */
     public long getRecordsProcessed() { return recordsProcessed; }
+    /**
+     * Sets the number of records processed.
+     * @param recordsProcessed processed record count
+     */
     public void setRecordsProcessed(long recordsProcessed) { this.recordsProcessed = recordsProcessed; }
 
+    /**
+     * Gets the number of records failed.
+     * @return failed record count
+     */
     public long getRecordsFailed() { return recordsFailed; }
+    /**
+     * Sets the number of records failed.
+     * @param recordsFailed failed record count
+     */
     public void setRecordsFailed(long recordsFailed) { this.recordsFailed = recordsFailed; }
 
+    /**
+     * Represents a validation error for a specific rule and column.
+     * @author Amit Prakash Nema
+     */
     public static class ValidationError {
         private String ruleName;
         private String column;

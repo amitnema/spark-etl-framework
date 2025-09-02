@@ -13,7 +13,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Utility class for common ETL operations
+ * Utility class for common ETL operations.
+ * <p>
+ * Provides methods for loading YAML configs, converting objects to JSON, formatting dates, and more.
+ * </p>
+ *
+ * @author Amit Prakash Nema
  */
 public class ETLUtils {
     private static final Logger logger = LoggerFactory.getLogger(ETLUtils.class);
@@ -21,7 +26,13 @@ public class ETLUtils {
     private static final ObjectMapper jsonMapper = new ObjectMapper();
 
     /**
-     * Load YAML configuration from classpath
+     * Loads YAML configuration from the classpath and deserializes to the specified class.
+     *
+     * @param resourcePath path to YAML resource
+     * @param clazz target class
+     * @param <T> type of config
+     * @return deserialized config object
+     * @throws IOException if resource not found or parsing fails
      */
     public static <T> T loadYamlConfig(String resourcePath, Class<T> clazz) throws IOException {
         try (InputStream is = ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
@@ -33,7 +44,11 @@ public class ETLUtils {
     }
 
     /**
-     * Load YAML configuration as Map
+     * Loads YAML configuration as a Map from the classpath.
+     *
+     * @param resourcePath path to YAML resource
+     * @return config as Map
+     * @throws IOException if resource not found or parsing fails
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> loadYamlConfigAsMap(String resourcePath) throws IOException {
@@ -41,7 +56,10 @@ public class ETLUtils {
     }
 
     /**
-     * Convert object to JSON string
+     * Converts an object to a JSON string.
+     *
+     * @param object object to convert
+     * @return JSON string
      */
     public static String toJsonString(Object object) {
         try {
