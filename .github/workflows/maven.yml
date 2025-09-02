@@ -1,0 +1,39 @@
+name: Build, Test, and Quality
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 11 ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+          cache: maven
+      - name: Build and Test
+        run: mvn clean verify
+      - name: Code Coverage (JaCoCo)
+        run: mvn jacoco:report
+      #      - name: Code Quality (SpotBugs, Checkstyle, PMD)
+      #        run: mvn spotbugs:check checkstyle:check pmd:check
+      #      - name: Security Scan (OWASP Dependency Check)
+      #        run: mvn org.owasp:dependency-check-maven:check
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/target/surefire-reports/'
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: '**/target/site/jacoco/'
+

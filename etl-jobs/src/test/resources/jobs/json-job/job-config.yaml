@@ -1,0 +1,50 @@
+jobName: "sample-etl-job"
+jobDescription: "Sample ETL job demonstrating framework capabilities"
+jobVersion: "1.0.0"
+
+inputs:
+  - name: "source_data"
+    type: "file"
+    format: "json"
+    path: "src/test/resources/jobs/json-job/input.json"
+    options:
+      multiline: true
+      timestampFormat: "yyyy-MM-dd HH:mm:ss"
+
+transformation:
+  className: "org.apn.etl.jobs.sample.SampleDataTransformer"
+  parameters:
+    filterDate: "2023-01-01"
+    outputFormat: "processed"
+    customParam: "sample_value"
+
+outputs:
+  - name: "processed_data"
+    type: "file"
+    format: "json"
+    path: "target/classes/jobs/json-job/output"
+    mode: "overwrite"
+    partition:
+      columns: ["year", "month"]
+      strategy: "COLUMN"
+
+validation:
+  enabled: true
+  onFailure: "STOP"
+  rules:
+    - name: "check_not_null_id"
+      type: "NOT_NULL"
+      column: "id"
+    - name: "check_unique_id"
+      type: "UNIQUE"
+      column: "id"
+    - name: "check_status_values"
+      type: "REGEX"
+      column: "status"
+      parameters:
+        pattern: "^(active|inactive|pending)$"
+
+parameters:
+  batchSize: 10000
+  maxRetries: 3
+  timeout: 3600
