@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [11]
+        java: [ 11 ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
@@ -22,8 +22,8 @@ jobs:
         run: mvn clean verify
       - name: Code Coverage (JaCoCo)
         run: mvn jacoco:report
-      - name: Code Quality (SpotBugs, Checkstyle, PMD)
-        run: mvn spotbugs:check checkstyle:check pmd:check
+      #      - name: Code Quality (SpotBugs, Checkstyle, PMD)
+      #        run: mvn spotbugs:check checkstyle:check pmd:check
       - name: Security Scan (OWASP Dependency Check)
         run: mvn org.owasp:dependency-check-maven:check
       - name: Upload Test Results

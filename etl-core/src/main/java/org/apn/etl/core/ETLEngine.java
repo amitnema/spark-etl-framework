@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -112,7 +112,8 @@ public final class ETLEngine {
     return datasets;
   }
 
-  private void validateInputData(final Map<String, Dataset<Row>> datasets) throws ValidationException {
+  private void validateInputData(final Map<String, Dataset<Row>> datasets)
+      throws ValidationException {
     if (jobConfig.getValidation() == null || !jobConfig.getValidation().isEnabled()) {
       logger.info("Input validation is disabled, skipping validation");
       return;

@@ -39,8 +39,7 @@ public class ETLJobConfig {
   // Constructors
   public ETLJobConfig() {}
 
-  public ETLJobConfig(
-      final String jobName, final String jobDescription, final String jobVersion) {
+  public ETLJobConfig(final String jobName, final String jobDescription, final String jobVersion) {
     this.jobName = jobName;
     this.jobDescription = jobDescription;
     this.jobVersion = jobVersion;

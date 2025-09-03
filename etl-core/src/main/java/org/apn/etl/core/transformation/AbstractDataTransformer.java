@@ -70,8 +70,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    * @param parameters Transformation parameters
    * @return Transformed dataset
    */
-  protected abstract Dataset<Row> doTransform(
-      Dataset<Row> input, Map<String, Object> parameters);
+  protected abstract Dataset<Row> doTransform(Dataset<Row> input, Map<String, Object> parameters);
 
   /**
    * Post-transformation hook for cleanup operations. Override to implement custom cleanup logic
