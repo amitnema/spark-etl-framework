@@ -1,50 +1,50 @@
-jobName: "${JOB_NAME:sample-etl-job}"
-jobDescription: "${JOB_DESCRIPTION:Sample ETL job demonstrating framework capabilities}"
-jobVersion: "${JOB_VERSION:1.0.0}"
+jobName: "sample-etl-job"
+jobDescription: "Sample ETL job demonstrating framework capabilities"
+jobVersion: "1.0.0"
 
 inputs:
-  - name: "${INPUT_NAME:source_data}"
-    type: "${INPUT_TYPE:file}"
-    format: "${INPUT_FORMAT:parquet}"
-    path: "${INPUT_PATH:s3a://my-bucket/input/data.parquet}"
+  - name: "source_data"
+    type: "file"
+    format: "parquet"
+    path: "s3a://my-bucket/input/data.parquet"
     options:
-      multiline: ${INPUT_MULTILINE:true}
-      timestampFormat: "${INPUT_TIMESTAMP_FORMAT:yyyy-MM-dd HH:mm:ss}"
+      multiline: true
+      timestampFormat: "yyyy-MM-dd HH:mm:ss"
 
 transformation:
-  className: "${TRANSFORMATION_CLASS:org.apn.etl.jobs.sample.SampleDataTransformer}"
+  className: "com.etl.jobs.sample.SampleDataTransformer"
   parameters:
-    filterDate: "${TRANSFORMATION_FILTER_DATE:2023-01-01}"
-    outputFormat: "${TRANSFORMATION_OUTPUT_FORMAT:processed}"
-    customParam: "${TRANSFORMATION_CUSTOM_PARAM:sample_value}"
+    filterDate: "2023-01-01"
+    outputFormat: "processed"
+    customParam: "sample_value"
 
 outputs:
-  - name: "${OUTPUT_NAME:processed_data}"
-    type: "${OUTPUT_TYPE:file}"
-    format: "${OUTPUT_FORMAT:parquet}"
-    path: "${OUTPUT_PATH:s3a://my-bucket/output/processed_data.parquet}"
-    mode: "${OUTPUT_MODE:overwrite}"
+  - name: "processed_data"
+    type: "file"
+    format: "parquet"
+    path: "s3a://my-bucket/output/processed_data.parquet"
+    mode: "overwrite"
     partition:
-      columns: ["${OUTPUT_PARTITION_COLUMNS_YEAR:year}", "${OUTPUT_PARTITION_COLUMNS_MONTH:month}"]
-      strategy: "${OUTPUT_PARTITION_STRATEGY:COLUMN}"
+      columns: ["year", "month"]
+      strategy: "COLUMN"
 
 validation:
-  enabled: ${VALIDATION_ENABLED:true}
-  onFailure: "${VALIDATION_ON_FAILURE:STOP}"
+  enabled: true
+  onFailure: "STOP"
   rules:
-    - name: "${VALIDATION_RULE1_NAME:check_not_null_id}"
-      type: "${VALIDATION_RULE1_TYPE:NOT_NULL}"
-      column: "${VALIDATION_RULE1_COLUMN:id}"
-    - name: "${VALIDATION_RULE2_NAME:check_unique_id}"
-      type: "${VALIDATION_RULE2_TYPE:UNIQUE}"
-      column: "${VALIDATION_RULE2_COLUMN:id}"
-    - name: "${VALIDATION_RULE3_NAME:check_status_values}"
-      type: "${VALIDATION_RULE3_TYPE:REGEX}"
-      column: "${VALIDATION_RULE3_COLUMN:status}"
+    - name: "check_not_null_id"
+      type: "NOT_NULL"
+      column: "id"
+    - name: "check_unique_id"
+      type: "UNIQUE"
+      column: "id"
+    - name: "check_status_values"
+      type: "REGEX"
+      column: "status"
       parameters:
-        pattern: "${VALIDATION_RULE3_PATTERN:^(active|inactive|pending)$}"
+        pattern: "^(active|inactive|pending)$"
 
 parameters:
-  batchSize: ${PARAM_BATCH_SIZE:10000}
-  maxRetries: ${PARAM_MAX_RETRIES:3}
-  timeout: ${PARAM_TIMEOUT:3600}
+  batchSize: 10000
+  maxRetries: 3
+  timeout: 3600
