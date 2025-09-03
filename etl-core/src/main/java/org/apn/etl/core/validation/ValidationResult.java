@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author Amit Prakash Nema
  */
-public class ValidationResult {
+public final class ValidationResult {
   private boolean isValid;
   private List<ValidationError> errors;
   private Map<String, Object> metrics;
@@ -34,7 +34,7 @@ public class ValidationResult {
 
   public ValidationResult() {}
 
-  public ValidationResult(boolean isValid) {
+  public ValidationResult(final boolean isValid) {
     this.isValid = isValid;
   }
 
@@ -52,7 +52,7 @@ public class ValidationResult {
    *
    * @param valid true if valid, false otherwise
    */
-  public void setValid(boolean valid) {
+  public void setValid(final boolean valid) {
     isValid = valid;
   }
 
@@ -70,7 +70,7 @@ public class ValidationResult {
    *
    * @param errors list of errors
    */
-  public void setErrors(List<ValidationError> errors) {
+  public void setErrors(final List<ValidationError> errors) {
     this.errors = errors;
   }
 
@@ -88,7 +88,7 @@ public class ValidationResult {
    *
    * @param metrics metrics map
    */
-  public void setMetrics(Map<String, Object> metrics) {
+  public void setMetrics(final Map<String, Object> metrics) {
     this.metrics = metrics;
   }
 
@@ -106,7 +106,7 @@ public class ValidationResult {
    *
    * @param recordsProcessed processed record count
    */
-  public void setRecordsProcessed(long recordsProcessed) {
+  public void setRecordsProcessed(final long recordsProcessed) {
     this.recordsProcessed = recordsProcessed;
   }
 
@@ -124,7 +124,7 @@ public class ValidationResult {
    *
    * @param recordsFailed failed record count
    */
-  public void setRecordsFailed(long recordsFailed) {
+  public void setRecordsFailed(final long recordsFailed) {
     this.recordsFailed = recordsFailed;
   }
 
@@ -133,7 +133,7 @@ public class ValidationResult {
    *
    * @author Amit Prakash Nema
    */
-  public static class ValidationError {
+  public static final class ValidationError {
     private String ruleName;
     private String column;
     private String message;
@@ -141,7 +141,7 @@ public class ValidationResult {
 
     public ValidationError() {}
 
-    public ValidationError(String ruleName, String column, String message) {
+    public ValidationError(final String ruleName, final String column, final String message) {
       this.ruleName = ruleName;
       this.column = column;
       this.message = message;
@@ -152,7 +152,7 @@ public class ValidationResult {
       return ruleName;
     }
 
-    public void setRuleName(String ruleName) {
+    public void setRuleName(final String ruleName) {
       this.ruleName = ruleName;
     }
 
@@ -160,7 +160,7 @@ public class ValidationResult {
       return column;
     }
 
-    public void setColumn(String column) {
+    public void setColumn(final String column) {
       this.column = column;
     }
 
@@ -168,7 +168,7 @@ public class ValidationResult {
       return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
       this.message = message;
     }
 
@@ -176,7 +176,7 @@ public class ValidationResult {
       return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(final Object value) {
       this.value = value;
     }
   }

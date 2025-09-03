@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -39,10 +39,10 @@ public class DatabaseDataWriter implements DataWriter {
    * @throws IllegalArgumentException if the connection string or table name is missing.
    */
   @Override
-  public void write(Dataset<Row> dataset, OutputConfig config) {
-    String connectionString = config.getConnectionString();
-    String tableName = config.getPath(); // Using path as table name
-    SaveMode mode = getSaveMode(config.getMode());
+  public void write(final Dataset<Row> dataset, final OutputConfig config) {
+    final String connectionString = config.getConnectionString();
+    final String tableName = config.getPath(); // Using path as table name
+    final SaveMode mode = getSaveMode(config.getMode());
 
     if (connectionString == null || connectionString.isEmpty()) {
       throw new IllegalArgumentException("Connection string is required for database writer");
@@ -54,7 +54,7 @@ public class DatabaseDataWriter implements DataWriter {
 
     logger.info("Writing to database table: {} with mode: {}", tableName, mode);
 
-    Properties connectionProps = new Properties();
+    final Properties connectionProps = new Properties();
 
     // Add connection properties from options
     if (config.getOptions() != null) {
@@ -72,7 +72,7 @@ public class DatabaseDataWriter implements DataWriter {
    * @param mode The save mode as a string (e.g., "overwrite", "append").
    * @return The corresponding Spark SaveMode enum. Defaults to ErrorIfExists.
    */
-  private SaveMode getSaveMode(String mode) {
+  private SaveMode getSaveMode(final String mode) {
     if (mode == null) return SaveMode.ErrorIfExists;
 
     switch (mode.toLowerCase()) {

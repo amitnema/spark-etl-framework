@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -26,18 +26,25 @@ import org.apn.etl.core.transformation.AbstractDataTransformer;
  *
  * @author Amit Prakash Nema
  */
-public class SampleDataTransformer extends AbstractDataTransformer {
+public final class SampleDataTransformer extends AbstractDataTransformer {
+
+  private static final String PROCESSED_TIMESTAMP_COL = "processed_timestamp";
+  private static final String YEAR_COL = "year";
+  private static final String DATE_COLUMN_COL = "date_column";
+  private static final String STATUS_COL = "status";
+  private static final String ACTIVE_STATUS = "active";
 
   @Override
-  protected Dataset<Row> doTransform(Dataset<Row> input, Map<String, Object> parameters) {
+  protected Dataset<Row> doTransform(
+      final Dataset<Row> input, final Map<String, Object> parameters) {
     logger.info("Executing sample data transformation");
 
     // Sample transformation: Add current timestamp and filter active records
-    Dataset<Row> transformed =
+    final Dataset<Row> transformed =
         input
-            .withColumn("processed_timestamp", functions.current_timestamp())
-            .withColumn("year", functions.year(functions.col("date_column")))
-            .filter(functions.col("status").equalTo("active"));
+            .withColumn(PROCESSED_TIMESTAMP_COL, functions.current_timestamp())
+            .withColumn(YEAR_COL, functions.year(functions.col(DATE_COLUMN_COL)))
+            .filter(functions.col(STATUS_COL).equalTo(ACTIVE_STATUS));
 
     logger.info(
         "Sample transformation completed. Input records: {}, Output records: {}",

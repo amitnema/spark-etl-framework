@@ -26,8 +26,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public class TransformerFactory {
+public final class TransformerFactory {
   private static final Logger logger = LoggerFactory.getLogger(TransformerFactory.class);
+
+  private TransformerFactory() {
+    // private constructor to hide the implicit public one
+  }
 
   /**
    * Creates a {@link DataTransformer} instance based on the specified class name. It can
@@ -39,7 +43,7 @@ public class TransformerFactory {
    * @return A {@link DataTransformer} instance.
    * @throws RuntimeException if the transformer class cannot be found, instantiated, or accessed.
    */
-  public static DataTransformer createTransformer(String className) {
+  public static DataTransformer createTransformer(final String className) {
     logger.info("Creating transformer: {}", className);
 
     try {
@@ -50,10 +54,10 @@ public class TransformerFactory {
           return new SqlDataTransformer();
         default:
           // Try to load custom transformer class
-          Class<?> clazz = Class.forName(className);
+          final Class<?> clazz = Class.forName(className);
           return (DataTransformer) clazz.getDeclaredConstructor().newInstance();
       }
-    } catch (Exception e) {
+    } catch (final Exception e) {
       logger.error("Error creating transformer: {}", className, e);
       throw new RuntimeException("Failed to create transformer: " + className, e);
     }

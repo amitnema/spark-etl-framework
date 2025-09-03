@@ -47,7 +47,7 @@ public class ValidationConfig {
    *
    * @param enabled true to enable validation
    */
-  public void setEnabled(boolean enabled) {
+  public void setEnabled(final boolean enabled) {
     this.enabled = enabled;
   }
 
@@ -65,7 +65,7 @@ public class ValidationConfig {
    *
    * @param rules list of validation rules
    */
-  public void setRules(List<ValidationRule> rules) {
+  public void setRules(final List<ValidationRule> rules) {
     this.rules = rules;
   }
 
@@ -83,7 +83,7 @@ public class ValidationConfig {
    *
    * @param onFailure failure strategy
    */
-  public void setOnFailure(String onFailure) {
+  public void setOnFailure(final String onFailure) {
     this.onFailure = onFailure;
   }
 
@@ -101,7 +101,7 @@ public class ValidationConfig {
    *
    * @param parameters parameters map
    */
-  public void setParameters(Map<String, Object> parameters) {
+  public void setParameters(final Map<String, Object> parameters) {
     this.parameters = parameters;
   }
 
@@ -132,7 +132,7 @@ public class ValidationConfig {
      *
      * @param name rule name
      */
-    public void setName(String name) {
+    public void setName(final String name) {
       this.name = name;
     }
 
@@ -150,7 +150,7 @@ public class ValidationConfig {
      *
      * @param type rule type
      */
-    public void setType(String type) {
+    public void setType(final String type) {
       this.type = type;
     }
 
@@ -168,7 +168,7 @@ public class ValidationConfig {
      *
      * @param column column name
      */
-    public void setColumn(String column) {
+    public void setColumn(final String column) {
       this.column = column;
     }
 
@@ -186,7 +186,7 @@ public class ValidationConfig {
      *
      * @param parameters parameters map
      */
-    public void setParameters(Map<String, Object> parameters) {
+    public void setParameters(final Map<String, Object> parameters) {
       this.parameters = parameters;
     }
   }

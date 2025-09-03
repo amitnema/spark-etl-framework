@@ -36,7 +36,7 @@ public class TransformationConfig {
   // Constructors
   public TransformationConfig() {}
 
-  public TransformationConfig(String className) {
+  public TransformationConfig(final String className) {
     this.className = className;
   }
 
@@ -55,7 +55,7 @@ public class TransformationConfig {
    *
    * @param className class name
    */
-  public void setClassName(String className) {
+  public void setClassName(final String className) {
     this.className = className;
   }
 
@@ -73,7 +73,7 @@ public class TransformationConfig {
    *
    * @param steps list of steps
    */
-  public void setSteps(List<String> steps) {
+  public void setSteps(final List<String> steps) {
     this.steps = steps;
   }
 
@@ -91,7 +91,7 @@ public class TransformationConfig {
    *
    * @param parameters parameters map
    */
-  public void setParameters(Map<String, Object> parameters) {
+  public void setParameters(final Map<String, Object> parameters) {
     this.parameters = parameters;
   }
 
@@ -109,7 +109,7 @@ public class TransformationConfig {
    *
    * @param sqlFile SQL file path
    */
-  public void setSqlFile(String sqlFile) {
+  public void setSqlFile(final String sqlFile) {
     this.sqlFile = sqlFile;
   }
 
@@ -127,7 +127,7 @@ public class TransformationConfig {
    *
    * @param customFunctions list of custom functions
    */
-  public void setCustomFunctions(List<String> customFunctions) {
+  public void setCustomFunctions(final List<String> customFunctions) {
     this.customFunctions = customFunctions;
   }
 }

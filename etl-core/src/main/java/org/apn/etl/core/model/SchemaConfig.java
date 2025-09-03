@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -44,7 +44,7 @@ public class SchemaConfig {
    *
    * @param fields list of field configs
    */
-  public void setFields(List<FieldConfig> fields) {
+  public void setFields(final List<FieldConfig> fields) {
     this.fields = fields;
   }
 
@@ -62,7 +62,7 @@ public class SchemaConfig {
    *
    * @param strictMode true to enable strict mode
    */
-  public void setStrictMode(boolean strictMode) {
+  public void setStrictMode(final boolean strictMode) {
     this.strictMode = strictMode;
   }
 
@@ -79,7 +79,7 @@ public class SchemaConfig {
 
     public FieldConfig() {}
 
-    public FieldConfig(String name, String type, boolean nullable) {
+    public FieldConfig(final String name, final String type, final boolean nullable) {
       this.name = name;
       this.type = type;
       this.nullable = nullable;
@@ -99,7 +99,7 @@ public class SchemaConfig {
      *
      * @param name field name
      */
-    public void setName(String name) {
+    public void setName(final String name) {
       this.name = name;
     }
 
@@ -117,7 +117,7 @@ public class SchemaConfig {
      *
      * @param type field type
      */
-    public void setType(String type) {
+    public void setType(final String type) {
       this.type = type;
     }
 
@@ -135,7 +135,7 @@ public class SchemaConfig {
      *
      * @param nullable true if nullable
      */
-    public void setNullable(boolean nullable) {
+    public void setNullable(final boolean nullable) {
       this.nullable = nullable;
     }
 
@@ -153,7 +153,7 @@ public class SchemaConfig {
      *
      * @param defaultValue default value
      */
-    public void setDefaultValue(Object defaultValue) {
+    public void setDefaultValue(final Object defaultValue) {
       this.defaultValue = defaultValue;
     }
   }

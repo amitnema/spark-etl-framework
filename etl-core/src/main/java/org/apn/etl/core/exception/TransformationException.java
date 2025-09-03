@@ -22,11 +22,13 @@ package org.apn.etl.core.exception;
  */
 public class TransformationException extends ETLException {
 
-  public TransformationException(String message) {
+  private static final long serialVersionUID = 1L;
+
+  public TransformationException(final String message) {
     super(message);
   }
 
-  public TransformationException(String message, Throwable cause) {
+  public TransformationException(final String message, final Throwable cause) {
     super(message, cause);
   }
 }

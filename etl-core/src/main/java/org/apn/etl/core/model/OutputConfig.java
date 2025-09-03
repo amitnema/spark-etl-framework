@@ -38,7 +38,12 @@ public class OutputConfig {
   // Constructors
   public OutputConfig() {}
 
-  public OutputConfig(String name, String type, String format, String path, String mode) {
+  public OutputConfig(
+      final String name,
+      final String type,
+      final String format,
+      final String path,
+      final String mode) {
     this.name = name;
     this.type = type;
     this.format = format;
@@ -61,7 +66,7 @@ public class OutputConfig {
    *
    * @param name output name
    */
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -79,7 +84,7 @@ public class OutputConfig {
    *
    * @param type output type
    */
-  public void setType(String type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
@@ -97,7 +102,7 @@ public class OutputConfig {
    *
    * @param format output format
    */
-  public void setFormat(String format) {
+  public void setFormat(final String format) {
     this.format = format;
   }
 
@@ -115,7 +120,7 @@ public class OutputConfig {
    *
    * @param path output path
    */
-  public void setPath(String path) {
+  public void setPath(final String path) {
     this.path = path;
   }
 
@@ -133,7 +138,7 @@ public class OutputConfig {
    *
    * @param connectionString connection string
    */
-  public void setConnectionString(String connectionString) {
+  public void setConnectionString(final String connectionString) {
     this.connectionString = connectionString;
   }
 
@@ -151,7 +156,7 @@ public class OutputConfig {
    *
    * @param mode output mode
    */
-  public void setMode(String mode) {
+  public void setMode(final String mode) {
     this.mode = mode;
   }
 
@@ -169,7 +174,7 @@ public class OutputConfig {
    *
    * @param options options map
    */
-  public void setOptions(Map<String, Object> options) {
+  public void setOptions(final Map<String, Object> options) {
     this.options = options;
   }
 
@@ -187,7 +192,7 @@ public class OutputConfig {
    *
    * @param partition partition config
    */
-  public void setPartition(PartitionConfig partition) {
+  public void setPartition(final PartitionConfig partition) {
     this.partition = partition;
   }
 }

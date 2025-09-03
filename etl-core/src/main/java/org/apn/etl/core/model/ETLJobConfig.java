@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -39,7 +39,8 @@ public class ETLJobConfig {
   // Constructors
   public ETLJobConfig() {}
 
-  public ETLJobConfig(String jobName, String jobDescription, String jobVersion) {
+  public ETLJobConfig(
+      final String jobName, final String jobDescription, final String jobVersion) {
     this.jobName = jobName;
     this.jobDescription = jobDescription;
     this.jobVersion = jobVersion;
@@ -60,7 +61,7 @@ public class ETLJobConfig {
    *
    * @param jobName job name
    */
-  public void setJobName(String jobName) {
+  public void setJobName(final String jobName) {
     this.jobName = jobName;
   }
 
@@ -78,7 +79,7 @@ public class ETLJobConfig {
    *
    * @param jobDescription job description
    */
-  public void setJobDescription(String jobDescription) {
+  public void setJobDescription(final String jobDescription) {
     this.jobDescription = jobDescription;
   }
 
@@ -96,7 +97,7 @@ public class ETLJobConfig {
    *
    * @param jobVersion job version
    */
-  public void setJobVersion(String jobVersion) {
+  public void setJobVersion(final String jobVersion) {
     this.jobVersion = jobVersion;
   }
 
@@ -114,7 +115,7 @@ public class ETLJobConfig {
    *
    * @param inputs list of input configs
    */
-  public void setInputs(List<InputConfig> inputs) {
+  public void setInputs(final List<InputConfig> inputs) {
     this.inputs = inputs;
   }
 
@@ -132,7 +133,7 @@ public class ETLJobConfig {
    *
    * @param transformation transformation config
    */
-  public void setTransformation(TransformationConfig transformation) {
+  public void setTransformation(final TransformationConfig transformation) {
     this.transformation = transformation;
   }
 
@@ -150,7 +151,7 @@ public class ETLJobConfig {
    *
    * @param outputs list of output configs
    */
-  public void setOutputs(List<OutputConfig> outputs) {
+  public void setOutputs(final List<OutputConfig> outputs) {
     this.outputs = outputs;
   }
 
@@ -168,7 +169,7 @@ public class ETLJobConfig {
    *
    * @param validation validation config
    */
-  public void setValidation(ValidationConfig validation) {
+  public void setValidation(final ValidationConfig validation) {
     this.validation = validation;
   }
 
@@ -186,7 +187,7 @@ public class ETLJobConfig {
    *
    * @param parameters parameters map
    */
-  public void setParameters(Map<String, Object> parameters) {
+  public void setParameters(final Map<String, Object> parameters) {
     this.parameters = parameters;
   }
 }

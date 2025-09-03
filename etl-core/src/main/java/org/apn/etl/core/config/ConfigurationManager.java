@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public class ConfigurationManager {
+public final class ConfigurationManager {
   private static final Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
 
   private static ConfigurationManager instance;
@@ -67,19 +67,19 @@ public class ConfigurationManager {
     try (InputStream is =
         getClass().getClassLoader().getResourceAsStream("application.properties")) {
       if (is != null) {
-        Objects.requireNonNull(properties, "properties file must not be " + properties).load(is);
+        properties.load(is);
       }
-    } catch (IOException e) {
+    } catch (final IOException e) {
       logger.error("Error loading application.properties", e);
     }
 
     // Load job configuration YAML
     try (InputStream is = getClass().getClassLoader().getResourceAsStream("job-config.yaml")) {
       if (is != null) {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         jobConfig = mapper.readValue(is, new TypeReference<>() {});
       }
-    } catch (IOException e) {
+    } catch (final IOException e) {
       logger.error("Error loading job-config.yaml", e);
     }
   }
@@ -90,7 +90,7 @@ public class ConfigurationManager {
    * @param key The property key.
    * @return The property value, or null if not found.
    */
-  public String getProperty(String key) {
+  public String getProperty(final String key) {
     return getProperty(key, null);
   }
 
@@ -101,7 +101,7 @@ public class ConfigurationManager {
    * @param defaultValue The default value to return if the key is not found.
    * @return The property value, or the default value if not found.
    */
-  public String getProperty(String key, String defaultValue) {
+  public String getProperty(final String key, final String defaultValue) {
     return properties.getProperty(key, defaultValue);
   }
 
@@ -123,11 +123,11 @@ public class ConfigurationManager {
    * @return The configuration value cast to the specified type, or null if not found.
    */
   @SuppressWarnings("unchecked")
-  public <T> T getJobConfigValue(String path, Class<T> type) {
-    String[] keys = path.split("\\.");
+  public <T> T getJobConfigValue(final String path, final Class<T> type) {
+    final String[] keys = path.split("\\.");
     Object current = jobConfig;
 
-    for (String key : keys) {
+    for (final String key : keys) {
       if (current instanceof Map) {
         current = ((Map<String, Object>) current).get(key);
       } else {
@@ -144,7 +144,7 @@ public class ConfigurationManager {
    * @param key The property key to set.
    * @param value The property value to set.
    */
-  public void setProperty(String key, String value) {
+  public void setProperty(final String key, final String value) {
     properties.setProperty(key, value);
   }
 }

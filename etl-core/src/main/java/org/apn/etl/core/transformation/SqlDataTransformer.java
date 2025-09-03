@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -34,7 +34,7 @@ import org.apn.etl.core.config.SparkConfig;
  *
  * @author Amit Prakash Nema
  */
-public class SqlDataTransformer extends AbstractDataTransformer {
+public final class SqlDataTransformer extends AbstractDataTransformer {
   /**
    * Executes the SQL transformation on the input dataset.
    *
@@ -45,11 +45,12 @@ public class SqlDataTransformer extends AbstractDataTransformer {
    * @throws RuntimeException if SQL execution fails
    */
   @Override
-  protected Dataset<Row> doTransform(Dataset<Row> input, Map<String, Object> parameters) {
-    SparkSession spark = SparkConfig.getSparkSession();
+  protected Dataset<Row> doTransform(
+      final Dataset<Row> input, final Map<String, Object> parameters) {
+    final SparkSession spark = SparkConfig.getSparkSession();
 
-    String sql = getParameter(parameters, "sql", "");
-    String tempViewName = getParameter(parameters, "tempViewName", "input_data");
+    final String sql = getParameter(parameters, "sql", "");
+    final String tempViewName = getParameter(parameters, "tempViewName", "input_data");
 
     if (sql.isEmpty()) {
       throw new IllegalArgumentException("SQL query is required for SqlDataTransformer");
@@ -64,7 +65,7 @@ public class SqlDataTransformer extends AbstractDataTransformer {
     try {
       // Execute SQL query
       return spark.sql(sql);
-    } catch (Exception e) {
+    } catch (final Exception e) {
       logger.error("Error executing SQL query", e);
       throw new RuntimeException("SQL transformation failed", e);
     }

@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -34,14 +34,15 @@ public abstract class AbstractDataTransformer implements DataTransformer {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   @Override
-  public final Dataset<Row> transform(Dataset<Row> input, Map<String, Object> parameters) {
+  public final Dataset<Row> transform(
+      final Dataset<Row> input, final Map<String, Object> parameters) {
     logger.info("Starting transformation: {}", getClass().getSimpleName());
 
     // Pre-transformation hook
     preTransform(input, parameters);
 
     // Main transformation logic
-    Dataset<Row> result = doTransform(input, parameters);
+    final Dataset<Row> result = doTransform(input, parameters);
 
     // Post-transformation hook
     postTransform(result, parameters);
@@ -57,7 +58,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    * @param input Input dataset
    * @param parameters Transformation parameters
    */
-  protected void preTransform(Dataset<Row> input, Map<String, Object> parameters) {
+  protected void preTransform(final Dataset<Row> input, final Map<String, Object> parameters) {
     // Default implementation does nothing
     logger.debug("Pre-transformation hook executed");
   }
@@ -69,7 +70,8 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    * @param parameters Transformation parameters
    * @return Transformed dataset
    */
-  protected abstract Dataset<Row> doTransform(Dataset<Row> input, Map<String, Object> parameters);
+  protected abstract Dataset<Row> doTransform(
+      Dataset<Row> input, Map<String, Object> parameters);
 
   /**
    * Post-transformation hook for cleanup operations. Override to implement custom cleanup logic
@@ -78,21 +80,22 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    * @param output Output dataset
    * @param parameters Transformation parameters
    */
-  protected void postTransform(Dataset<Row> output, Map<String, Object> parameters) {
+  protected void postTransform(final Dataset<Row> output, final Map<String, Object> parameters) {
     // Default implementation does nothing
     logger.debug("Post-transformation hook executed");
   }
 
   /** Utility method to get parameter value with default */
-  protected <T> T getParameter(Map<String, Object> parameters, String key, T defaultValue) {
-    Object value = parameters.get(key);
+  protected <T> T getParameter(
+      final Map<String, Object> parameters, final String key, final T defaultValue) {
+    final Object value = parameters.get(key);
     if (value == null) {
       return defaultValue;
     }
 
     try {
       return (T) value;
-    } catch (ClassCastException e) {
+    } catch (final ClassCastException e) {
       logger.warn("Parameter {} has wrong type, using default value", key);
       return defaultValue;
     }

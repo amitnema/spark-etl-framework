@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -38,7 +38,7 @@ public class InputConfig {
   // Constructors
   public InputConfig() {}
 
-  public InputConfig(String name, String type, String format, String path) {
+  public InputConfig(final String name, final String type, final String format, final String path) {
     this.name = name;
     this.type = type;
     this.format = format;
@@ -60,7 +60,7 @@ public class InputConfig {
    *
    * @param name input name
    */
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -78,7 +78,7 @@ public class InputConfig {
    *
    * @param type input type
    */
-  public void setType(String type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
@@ -96,7 +96,7 @@ public class InputConfig {
    *
    * @param format input format
    */
-  public void setFormat(String format) {
+  public void setFormat(final String format) {
     this.format = format;
   }
 
@@ -114,7 +114,7 @@ public class InputConfig {
    *
    * @param path input path
    */
-  public void setPath(String path) {
+  public void setPath(final String path) {
     this.path = path;
   }
 
@@ -132,7 +132,7 @@ public class InputConfig {
    *
    * @param connectionString connection string
    */
-  public void setConnectionString(String connectionString) {
+  public void setConnectionString(final String connectionString) {
     this.connectionString = connectionString;
   }
 
@@ -150,7 +150,7 @@ public class InputConfig {
    *
    * @param query query string
    */
-  public void setQuery(String query) {
+  public void setQuery(final String query) {
     this.query = query;
   }
 
@@ -168,7 +168,7 @@ public class InputConfig {
    *
    * @param options options map
    */
-  public void setOptions(Map<String, Object> options) {
+  public void setOptions(final Map<String, Object> options) {
     this.options = options;
   }
 
@@ -186,7 +186,7 @@ public class InputConfig {
    *
    * @param schema schema config
    */
-  public void setSchema(SchemaConfig schema) {
+  public void setSchema(final SchemaConfig schema) {
     this.schema = schema;
   }
 }

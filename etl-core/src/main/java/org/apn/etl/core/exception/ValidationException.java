@@ -23,9 +23,12 @@ import org.apn.etl.core.validation.ValidationResult;
  * @author Amit Prakash Nema
  */
 public class ValidationException extends ETLException {
+
+  private static final long serialVersionUID = 1L;
   private final ValidationResult validationResult;
 
-  public ValidationException(String message, ValidationResult validationResult) {
+  public ValidationException(
+      final String message, final ValidationResult validationResult) {
     super(message);
     this.validationResult = validationResult;
   }

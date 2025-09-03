@@ -41,10 +41,10 @@ public class FileDataReader implements DataReader {
    * @throws IllegalArgumentException if the file format in the config is not supported.
    */
   @Override
-  public Dataset<Row> read(InputConfig config) {
-    SparkSession spark = SparkConfig.getSparkSession();
-    String format = config.getFormat().toLowerCase();
-    String path = config.getPath();
+  public Dataset<Row> read(final InputConfig config) {
+    final SparkSession spark = SparkConfig.getSparkSession();
+    final String format = config.getFormat().toLowerCase();
+    final String path = config.getPath();
 
     logger.info("Reading {} file from path: {}", format, path);
 
@@ -64,15 +64,15 @@ public class FileDataReader implements DataReader {
     }
   }
 
-  private Dataset<Row> readParquet(SparkSession spark, InputConfig config) {
+  private Dataset<Row> readParquet(final SparkSession spark, final InputConfig config) {
     return spark.read().options(toStringMap(config.getOptions())).parquet(config.getPath());
   }
 
-  private Dataset<Row> readJson(SparkSession spark, InputConfig config) {
+  private Dataset<Row> readJson(final SparkSession spark, final InputConfig config) {
     return spark.read().options(toStringMap(config.getOptions())).json(config.getPath());
   }
 
-  private Dataset<Row> readCsv(SparkSession spark, InputConfig config) {
+  private Dataset<Row> readCsv(final SparkSession spark, final InputConfig config) {
     return spark
         .read()
         .option("header", "true")
@@ -81,7 +81,7 @@ public class FileDataReader implements DataReader {
         .csv(config.getPath());
   }
 
-  private Dataset<Row> readAvro(SparkSession spark, InputConfig config) {
+  private Dataset<Row> readAvro(final SparkSession spark, final InputConfig config) {
     return spark
         .read()
         .format("avro")
@@ -89,7 +89,7 @@ public class FileDataReader implements DataReader {
         .load(config.getPath());
   }
 
-  private Dataset<Row> readOrc(SparkSession spark, InputConfig config) {
+  private Dataset<Row> readOrc(final SparkSession spark, final InputConfig config) {
     return spark.read().options(toStringMap(config.getOptions())).orc(config.getPath());
   }
 }

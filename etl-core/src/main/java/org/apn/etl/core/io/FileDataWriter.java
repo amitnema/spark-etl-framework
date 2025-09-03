@@ -6,10 +6,10 @@
 * You may obtain a copy of the License at
 *
 *    http://www.apache.org/licenses/LICENSE-2.0
-*
+* 
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -42,10 +42,10 @@ public class FileDataWriter implements DataWriter {
    * @throws IllegalArgumentException if the file format in the config is not supported.
    */
   @Override
-  public void write(Dataset<Row> dataset, OutputConfig config) {
-    String format = config.getFormat().toLowerCase();
-    String path = config.getPath();
-    SaveMode mode = getSaveMode(config.getMode());
+  public void write(final Dataset<Row> dataset, final OutputConfig config) {
+    final String format = config.getFormat().toLowerCase();
+    final String path = config.getPath();
+    final SaveMode mode = getSaveMode(config.getMode());
 
     logger.info("Writing {} file to path: {} with mode: {}", format, path, mode);
 
@@ -84,7 +84,7 @@ public class FileDataWriter implements DataWriter {
    * @param mode The save mode as a string (e.g., "overwrite", "append").
    * @return The corresponding Spark SaveMode enum. Defaults to ErrorIfExists.
    */
-  private SaveMode getSaveMode(String mode) {
+  private SaveMode getSaveMode(final String mode) {
     if (mode == null) return SaveMode.ErrorIfExists;
 
     switch (mode.toLowerCase()) {
@@ -108,7 +108,7 @@ public class FileDataWriter implements DataWriter {
    * @return The configured DataFrameWriter.
    */
   private DataFrameWriter<Row> applyPartitioning(
-      DataFrameWriter<Row> writer, PartitionConfig partition) {
+      DataFrameWriter<Row> writer, final PartitionConfig partition) {
     if (partition.getColumns() != null && !partition.getColumns().isEmpty()) {
       return writer.partitionBy(partition.getColumns().toArray(new String[0]));
     }

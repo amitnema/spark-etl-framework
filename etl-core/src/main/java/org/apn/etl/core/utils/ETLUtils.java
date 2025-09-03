@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -34,10 +34,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public class ETLUtils {
+public final class ETLUtils {
   private static final Logger logger = LoggerFactory.getLogger(ETLUtils.class);
   private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
   private static final ObjectMapper jsonMapper = new ObjectMapper();
+
+  private ETLUtils() {
+    // private constructor to hide the implicit public one
+  }
 
   /**
    * Loads YAML configuration from the classpath and deserializes to the specified class.
@@ -48,7 +52,8 @@ public class ETLUtils {
    * @return deserialized config object
    * @throws IOException if resource not found or parsing fails
    */
-  public static <T> T loadYamlConfig(String resourcePath, Class<T> clazz) throws IOException {
+  public static <T> T loadYamlConfig(final String resourcePath, final Class<T> clazz)
+      throws IOException {
     try (InputStream is = ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
       if (is == null) {
         throw new IOException("Resource not found: " + resourcePath);
@@ -65,7 +70,8 @@ public class ETLUtils {
    * @throws IOException if resource not found or parsing fails
    */
   @SuppressWarnings("unchecked")
-  public static Map<String, Object> loadYamlConfigAsMap(String resourcePath) throws IOException {
+  public static Map<String, Object> loadYamlConfigAsMap(final String resourcePath)
+      throws IOException {
     return loadYamlConfig(resourcePath, Map.class);
   }
 
@@ -75,10 +81,10 @@ public class ETLUtils {
    * @param object object to convert
    * @return JSON string
    */
-  public static String toJsonString(Object object) {
+  public static String toJsonString(final Object object) {
     try {
       return jsonMapper.writeValueAsString(object);
-    } catch (Exception e) {
+    } catch (final Exception e) {
       logger.error("Error converting object to JSON", e);
       return "{}";
     }
@@ -90,17 +96,18 @@ public class ETLUtils {
   }
 
   /** Generate timestamp string with custom format */
-  public static String getTimestampString(String format) {
+  public static String getTimestampString(final String format) {
     return new SimpleDateFormat(format).format(new Date());
   }
 
   /** Safely get nested value from Map */
   @SuppressWarnings("unchecked")
-  public static <T> T getNestedValue(Map<String, Object> map, String path, T defaultValue) {
-    String[] keys = path.split("\\.");
+  public static <T> T getNestedValue(
+      final Map<String, Object> map, final String path, final T defaultValue) {
+    final String[] keys = path.split("\\.");
     Object current = map;
 
-    for (String key : keys) {
+    for (final String key : keys) {
       if (current instanceof Map) {
         current = ((Map<String, Object>) current).get(key);
       } else {
@@ -110,19 +117,19 @@ public class ETLUtils {
 
     try {
       return current != null ? (T) current : defaultValue;
-    } catch (ClassCastException e) {
+    } catch (final ClassCastException e) {
       logger.warn("Type cast error for path: {}, returning default value", path);
       return defaultValue;
     }
   }
 
   /** Check if string is null or empty */
-  public static boolean isEmpty(String str) {
+  public static boolean isEmpty(final String str) {
     return str == null || str.trim().isEmpty();
   }
 
   /** Check if string is not null and not empty */
-  public static boolean isNotEmpty(String str) {
+  public static boolean isNotEmpty(final String str) {
     return !isEmpty(str);
   }
 
@@ -134,7 +141,7 @@ public class ETLUtils {
    * @param <V> The type of the values in the map.
    * @return A new map with the same keys and string representations of the values.
    */
-  public static <K, V> Map<K, String> toStringMap(Map<K, V> inputMap) {
+  public static <K, V> Map<K, String> toStringMap(final Map<K, V> inputMap) {
     return inputMap.entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.valueOf(entry.getValue())));
   }

@@ -30,8 +30,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public class IOFactory {
+public final class IOFactory {
   private static final Logger logger = LoggerFactory.getLogger(IOFactory.class);
+
+  private IOFactory() {
+    // private constructor to hide the implicit public one
+  }
 
   /**
    * Creates a {@link DataReader} instance based on the specified type.
@@ -40,7 +44,7 @@ public class IOFactory {
    * @return A {@link DataReader} instance.
    * @throws IllegalArgumentException if the reader type is not supported.
    */
-  public static DataReader createReader(String type) {
+  public static DataReader createReader(final String type) {
     logger.info("Creating reader for type: {}", type);
 
     switch (type.toLowerCase()) {
@@ -62,7 +66,7 @@ public class IOFactory {
    * @return A {@link DataWriter} instance.
    * @throws IllegalArgumentException if the writer type is not supported.
    */
-  public static DataWriter createWriter(String type) {
+  public static DataWriter createWriter(final String type) {
     logger.info("Creating writer for type: {}", type);
 
     switch (type.toLowerCase()) {

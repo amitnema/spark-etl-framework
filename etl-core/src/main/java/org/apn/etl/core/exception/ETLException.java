@@ -23,12 +23,14 @@ package org.apn.etl.core.exception;
  */
 public class ETLException extends Exception {
 
+  private static final long serialVersionUID = 1L;
+
   /**
    * Constructs a new ETLException with the specified detail message.
    *
    * @param message the detail message.
    */
-  public ETLException(String message) {
+  public ETLException(final String message) {
     super(message);
   }
 
@@ -38,7 +40,7 @@ public class ETLException extends Exception {
    * @param message the detail message.
    * @param cause the cause.
    */
-  public ETLException(String message, Throwable cause) {
+  public ETLException(final String message, final Throwable cause) {
     super(message, cause);
   }
 }

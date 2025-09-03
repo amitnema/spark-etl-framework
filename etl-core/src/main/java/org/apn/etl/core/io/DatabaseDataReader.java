@@ -9,7 +9,7 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
@@ -40,11 +40,11 @@ public class DatabaseDataReader implements DataReader {
    * @throws IllegalArgumentException if the connection string is missing.
    */
   @Override
-  public Dataset<Row> read(InputConfig config) {
-    SparkSession spark = SparkConfig.getSparkSession();
+  public Dataset<Row> read(final InputConfig config) {
+    final SparkSession spark = SparkConfig.getSparkSession();
 
-    String connectionString = config.getConnectionString();
-    String query = config.getQuery();
+    final String connectionString = config.getConnectionString();
+    final String query = config.getQuery();
 
     if (connectionString == null || connectionString.isEmpty()) {
       throw new IllegalArgumentException("Connection string is required for database reader");
@@ -52,7 +52,7 @@ public class DatabaseDataReader implements DataReader {
 
     logger.info("Reading from database: {}", connectionString);
 
-    Properties connectionProps = new Properties();
+    final Properties connectionProps = new Properties();
 
     // Add connection properties from options
     if (config.getOptions() != null) {
@@ -68,7 +68,7 @@ public class DatabaseDataReader implements DataReader {
           .jdbc(connectionString, String.format("(%s) as query_table", query), connectionProps);
     } else {
       // Read entire table
-      String tableName = config.getPath(); // Using path as table name
+      final String tableName = config.getPath(); // Using path as table name
       return spark.read().jdbc(connectionString, tableName, connectionProps);
     }
   }

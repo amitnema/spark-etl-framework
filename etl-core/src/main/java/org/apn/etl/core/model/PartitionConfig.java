@@ -9,12 +9,13 @@
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License
 */
 package org.apn.etl.core.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,16 +25,22 @@ import java.util.List;
  *
  * @author Amit Prakash Nema
  */
-public class PartitionConfig {
+public final class PartitionConfig {
   private List<String> columns;
   private int numPartitions;
   private String strategy; // HASH, RANGE, COLUMN
 
   public PartitionConfig() {}
 
-  public PartitionConfig(List<String> columns, String strategy) {
-    this.columns = columns;
+  public PartitionConfig(final List<String> columns, final String strategy) {
+    this.columns = new ArrayList<>(columns);
     this.strategy = strategy;
+  }
+
+  public PartitionConfig(final PartitionConfig other) {
+    this.columns = new ArrayList<>(other.columns);
+    this.numPartitions = other.numPartitions;
+    this.strategy = other.strategy;
   }
 
   /**
@@ -42,7 +49,7 @@ public class PartitionConfig {
    * @return list of partition columns
    */
   public List<String> getColumns() {
-    return columns;
+    return new ArrayList<>(columns);
   }
 
   /**
@@ -50,8 +57,8 @@ public class PartitionConfig {
    *
    * @param columns list of partition columns
    */
-  public void setColumns(List<String> columns) {
-    this.columns = columns;
+  public void setColumns(final List<String> columns) {
+    this.columns = new ArrayList<>(columns);
   }
 
   /**
@@ -68,7 +75,7 @@ public class PartitionConfig {
    *
    * @param numPartitions number of partitions
    */
-  public void setNumPartitions(int numPartitions) {
+  public void setNumPartitions(final int numPartitions) {
     this.numPartitions = numPartitions;
   }
 
@@ -86,7 +93,7 @@ public class PartitionConfig {
    *
    * @param strategy strategy
    */
-  public void setStrategy(String strategy) {
+  public void setStrategy(final String strategy) {
     this.strategy = strategy;
   }
 }
