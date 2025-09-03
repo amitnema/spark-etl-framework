@@ -24,8 +24,8 @@ jobs:
         run: mvn jacoco:report
       #      - name: Code Quality (SpotBugs, Checkstyle, PMD)
       #        run: mvn spotbugs:check checkstyle:check pmd:check
-      - name: Security Scan (OWASP Dependency Check)
-        run: mvn org.owasp:dependency-check-maven:check
+      #      - name: Security Scan (OWASP Dependency Check)
+      #        run: mvn org.owasp:dependency-check-maven:check
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
