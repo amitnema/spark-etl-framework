@@ -16,6 +16,7 @@
 package org.apn.etl.jobs.sample;
 
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.functions;
@@ -26,6 +27,7 @@ import org.apn.etl.core.transformation.AbstractDataTransformer;
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public final class SampleDataTransformer extends AbstractDataTransformer {
 
   private static final String PROCESSED_TIMESTAMP_COL = "processed_timestamp";
@@ -38,7 +40,7 @@ public final class SampleDataTransformer extends AbstractDataTransformer {
   @Override
   protected Dataset<Row> doTransform(
       final Dataset<Row> input, final Map<String, Object> parameters) {
-    logger.info("Executing sample data transformation");
+    log.info("Executing sample data transformation");
 
     // Sample transformation: Add current timestamp and filter active records
     final Dataset<Row> transformed =
@@ -48,7 +50,7 @@ public final class SampleDataTransformer extends AbstractDataTransformer {
             .withColumn(MONTH_COL, functions.month(functions.col(DATE_COLUMN_COL)))
             .filter(functions.col(STATUS_COL).equalTo(ACTIVE_STATUS));
 
-    logger.info(
+    log.info(
         "Sample transformation completed. Input records: {}, Output records: {}",
         input.count(),
         transformed.count());

@@ -16,6 +16,7 @@
 package org.apn.etl.jobs.sample;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -27,17 +28,14 @@ import org.apn.etl.core.ETLEngine;
 import org.apn.etl.core.exception.ETLException;
 import org.apn.etl.core.model.ETLJobConfig;
 import org.apn.etl.core.utils.ETLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Sample ETL Job implementation
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public final class SampleETLJob {
-  private static final Logger logger = LoggerFactory.getLogger(SampleETLJob.class);
-
   private SampleETLJob() {
     // private constructor to hide the implicit public one
   }
@@ -65,10 +63,10 @@ public final class SampleETLJob {
       final ETLEngine engine = new ETLEngine(jobConfig);
       engine.execute();
 
-      logger.info("ETL job execution completed successfully");
+      log.info("ETL job execution completed successfully");
 
     } catch (final ParseException | IOException | ETLException e) {
-      logger.error("ETL job execution failed", e);
+      log.error("ETL job execution failed", e);
       System.exit(1);
     }
   }
@@ -101,7 +99,7 @@ public final class SampleETLJob {
   }
 
   public static ETLJobConfig loadJobConfig(final String configPath) throws IOException {
-    logger.info("Loading job configuration from: {}", configPath);
+    log.info("Loading job configuration from: {}", configPath);
     return ETLUtils.loadYamlConfig(configPath, ETLJobConfig.class);
   }
 }
