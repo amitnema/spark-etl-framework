@@ -23,6 +23,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The type Sample etl job integration test.
@@ -30,6 +32,8 @@ import org.junit.jupiter.api.Test;
  * @author Amit Prakash Nema
  */
 class SampleETLJobIntegrationTest {
+  private static final Logger logger = LoggerFactory.getLogger(SampleETLJobIntegrationTest.class);
+
   /**
    * Test etl job execution with json input.
    *
@@ -45,6 +49,7 @@ class SampleETLJobIntegrationTest {
     cleanDir(outputDir);
     // Run the ETL job
     SampleETLJob.main(args);
+    logger.info("ETL job executed with config: {}", configPath);
     // Check that output files are created
     File[] outputFiles;
     try (var paths = Files.walk(Paths.get(outputDir))) {
@@ -58,13 +63,19 @@ class SampleETLJobIntegrationTest {
     assertTrue(outputFiles.length > 0, "Output JSON files should be created");
     // Optionally, validate that output json each line contains only 'active' records; json element
     // name is 'status'
+    boolean foundActive = false;
     for (File file : outputFiles) {
       List<String> lines = Files.readAllLines(Paths.get(file.getPath()));
       for (String line : lines) {
         assertTrue(
             line.contains("\"status\":\"active\""), "Each record should have status 'active'");
+        if (line.contains("active")) {
+          foundActive = true;
+        }
       }
     }
+    assertTrue(foundActive, "Output should contain 'active' records");
+    logger.info("Integration test for ETL job passed");
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")

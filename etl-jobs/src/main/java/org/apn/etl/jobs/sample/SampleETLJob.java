@@ -73,7 +73,7 @@ public final class SampleETLJob {
     }
   }
 
-  private static CommandLine parseArguments(final String[] args) throws ParseException {
+  public static CommandLine parseArguments(final String[] args) throws ParseException {
     final Options options = new Options();
 
     options.addOption(
@@ -100,7 +100,7 @@ public final class SampleETLJob {
     return cmd;
   }
 
-  private static ETLJobConfig loadJobConfig(final String configPath) throws IOException {
+  public static ETLJobConfig loadJobConfig(final String configPath) throws IOException {
     logger.info("Loading job configuration from: {}", configPath);
     return ETLUtils.loadYamlConfig(configPath, ETLJobConfig.class);
   }
