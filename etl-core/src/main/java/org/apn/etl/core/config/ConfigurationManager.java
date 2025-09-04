@@ -19,11 +19,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Central configuration manager for the ETL framework. This class handles loading configuration
@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
+@Getter
 public final class ConfigurationManager {
-  private static final Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
-
   private static ConfigurationManager instance;
   private Properties properties;
   private Map<String, Object> jobConfig;
@@ -63,23 +63,22 @@ public final class ConfigurationManager {
   private void loadConfiguration() {
     // Load application.properties
     properties = new Properties();
-    try (InputStream is =
-        getClass().getClassLoader().getResourceAsStream("application.properties")) {
+    try (var is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
       if (is != null) {
-        properties.load(is);
+        Objects.requireNonNull(properties).load(is);
       }
     } catch (final IOException e) {
-      logger.error("Error loading application.properties", e);
+      log.error("Error loading application.properties", e);
     }
 
     // Load job configuration YAML
-    try (InputStream is = getClass().getClassLoader().getResourceAsStream("job-config.yaml")) {
+    try (var is = getClass().getClassLoader().getResourceAsStream("job-config.yaml")) {
       if (is != null) {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        final var mapper = new ObjectMapper(new YAMLFactory());
         jobConfig = mapper.readValue(is, new TypeReference<>() {});
       }
     } catch (final IOException e) {
-      logger.error("Error loading job-config.yaml", e);
+      log.error("Error loading job-config.yaml", e);
     }
   }
 
@@ -102,15 +101,6 @@ public final class ConfigurationManager {
    */
   public String getProperty(final String key, final String defaultValue) {
     return properties.getProperty(key, defaultValue);
-  }
-
-  /**
-   * Gets the entire job configuration loaded from `job-config.yaml` as a Map.
-   *
-   * @return A map representing the job configuration.
-   */
-  public Map<String, Object> getJobConfig() {
-    return jobConfig;
   }
 
   /**

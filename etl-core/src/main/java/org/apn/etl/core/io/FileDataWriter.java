@@ -15,24 +15,22 @@
 */
 package org.apn.etl.core.io;
 
-import static org.apn.etl.core.utils.ETLUtils.toStringMap;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.DataFrameWriter;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
 import org.apn.etl.core.model.OutputConfig;
 import org.apn.etl.core.model.PartitionConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apn.etl.core.utils.ETLUtils;
 
 /**
  * File-based data writer implementation.
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public class FileDataWriter implements DataWriter {
-  private static final Logger logger = LoggerFactory.getLogger(FileDataWriter.class);
 
   /**
    * Writes a Spark Dataset to a file-based destination.
@@ -43,14 +41,14 @@ public class FileDataWriter implements DataWriter {
    */
   @Override
   public void write(final Dataset<Row> dataset, final OutputConfig config) {
-    final String format = config.getFormat().toLowerCase();
-    final String path = config.getPath();
+    final var format = config.getFormat().toLowerCase();
+    final var path = config.getPath();
     final SaveMode mode = getSaveMode(config.getMode());
 
-    logger.info("Writing {} file to path: {} with mode: {}", format, path, mode);
+    log.info("Writing {} file to path: {} with mode: {}", format, path, mode);
 
     DataFrameWriter<Row> writer =
-        dataset.write().mode(mode).options(toStringMap(config.getOptions()));
+        dataset.write().mode(mode).options(ETLUtils.toStringMap(config.getOptions()));
 
     // Apply partitioning if configured
     if (config.getPartition() != null) {
@@ -115,7 +113,7 @@ public class FileDataWriter implements DataWriter {
 
     if (partition.getNumPartitions() > 0) {
       // This would need to be handled at dataset level before writing
-      logger.warn("Number of partitions should be set before calling write operation");
+      log.warn("Number of partitions should be set before calling write operation");
     }
 
     return writer;

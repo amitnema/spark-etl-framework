@@ -15,23 +15,21 @@
 */
 package org.apn.etl.core.io;
 
-import static org.apn.etl.core.utils.ETLUtils.toStringMap;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apn.etl.core.config.SparkConfig;
 import org.apn.etl.core.model.InputConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apn.etl.core.utils.ETLUtils;
 
 /**
  * File-based data reader implementation.
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public class FileDataReader implements DataReader {
-  private static final Logger logger = LoggerFactory.getLogger(FileDataReader.class);
 
   /**
    * Reads data from a file source based on the provided configuration.
@@ -43,10 +41,10 @@ public class FileDataReader implements DataReader {
   @Override
   public Dataset<Row> read(final InputConfig config) {
     final SparkSession spark = SparkConfig.getSparkSession();
-    final String format = config.getFormat().toLowerCase();
-    final String path = config.getPath();
+    final var format = config.getFormat().toLowerCase();
+    final var path = config.getPath();
 
-    logger.info("Reading {} file from path: {}", format, path);
+    log.info("Reading {} file from path: {}", format, path);
 
     switch (format) {
       case "parquet":
@@ -65,11 +63,14 @@ public class FileDataReader implements DataReader {
   }
 
   private Dataset<Row> readParquet(final SparkSession spark, final InputConfig config) {
-    return spark.read().options(toStringMap(config.getOptions())).parquet(config.getPath());
+    return spark
+        .read()
+        .options(ETLUtils.toStringMap(config.getOptions()))
+        .parquet(config.getPath());
   }
 
   private Dataset<Row> readJson(final SparkSession spark, final InputConfig config) {
-    return spark.read().options(toStringMap(config.getOptions())).json(config.getPath());
+    return spark.read().options(ETLUtils.toStringMap(config.getOptions())).json(config.getPath());
   }
 
   private Dataset<Row> readCsv(final SparkSession spark, final InputConfig config) {
@@ -77,7 +78,7 @@ public class FileDataReader implements DataReader {
         .read()
         .option("header", "true")
         .option("inferSchema", "true")
-        .options(toStringMap(config.getOptions()))
+        .options(ETLUtils.toStringMap(config.getOptions()))
         .csv(config.getPath());
   }
 
@@ -85,11 +86,11 @@ public class FileDataReader implements DataReader {
     return spark
         .read()
         .format("avro")
-        .options(toStringMap(config.getOptions()))
+        .options(ETLUtils.toStringMap(config.getOptions()))
         .load(config.getPath());
   }
 
   private Dataset<Row> readOrc(final SparkSession spark, final InputConfig config) {
-    return spark.read().options(toStringMap(config.getOptions())).orc(config.getPath());
+    return spark.read().options(ETLUtils.toStringMap(config.getOptions())).orc(config.getPath());
   }
 }

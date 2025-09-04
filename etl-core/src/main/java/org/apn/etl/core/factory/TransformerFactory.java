@@ -15,10 +15,10 @@
 */
 package org.apn.etl.core.factory;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apn.etl.core.transformation.DataTransformer;
 import org.apn.etl.core.transformation.SqlDataTransformer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Factory for creating data transformers. This class provides a static method to instantiate data
@@ -26,12 +26,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public final class TransformerFactory {
-  private static final Logger logger = LoggerFactory.getLogger(TransformerFactory.class);
-
-  private TransformerFactory() {
-    // private constructor to hide the implicit public one
-  }
+@UtilityClass
+@Slf4j
+public class TransformerFactory {
 
   /**
    * Creates a {@link DataTransformer} instance based on the specified class name. It can
@@ -43,8 +40,8 @@ public final class TransformerFactory {
    * @return A {@link DataTransformer} instance.
    * @throws RuntimeException if the transformer class cannot be found, instantiated, or accessed.
    */
-  public static DataTransformer createTransformer(final String className) {
-    logger.info("Creating transformer: {}", className);
+  public DataTransformer createTransformer(final String className) {
+    log.info("Creating transformer: {}", className);
 
     try {
       // Handle built-in transformers
@@ -54,11 +51,11 @@ public final class TransformerFactory {
           return new SqlDataTransformer();
         default:
           // Try to load custom transformer class
-          final Class<?> clazz = Class.forName(className);
+          final var clazz = Class.forName(className);
           return (DataTransformer) clazz.getDeclaredConstructor().newInstance();
       }
     } catch (final Exception e) {
-      logger.error("Error creating transformer: {}", className, e);
+      log.error("Error creating transformer: {}", className, e);
       throw new RuntimeException("Failed to create transformer: " + className, e);
     }
   }

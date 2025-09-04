@@ -15,32 +15,28 @@
 */
 package org.apn.etl.core.config;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Spark session configuration and management.
  *
  * @author Amit Prakash Nema
  */
-public final class SparkConfig {
-  private static final Logger logger = LoggerFactory.getLogger(SparkConfig.class);
-
-  private static SparkSession sparkSession;
-  private static final ConfigurationManager config = ConfigurationManager.getInstance();
-
-  private SparkConfig() {
-    // private constructor to hide the implicit public one
-  }
+@UtilityClass
+@Slf4j
+public class SparkConfig {
+  private SparkSession sparkSession;
+  private final ConfigurationManager config = ConfigurationManager.getInstance();
 
   /**
    * Gets the singleton SparkSession instance, creating it if it doesn't exist.
    *
    * @return The SparkSession instance.
    */
-  public static synchronized SparkSession getSparkSession() {
+  public synchronized SparkSession getSparkSession() {
     if (sparkSession == null) {
       sparkSession = createSparkSession();
     }
@@ -52,11 +48,11 @@ public final class SparkConfig {
    *
    * @return A new SparkSession.
    */
-  private static SparkSession createSparkSession() {
-    final String appName = config.getProperty("spark.app.name", "ETL-Framework");
-    final String master = config.getProperty("spark.master", "local[*]");
+  private SparkSession createSparkSession() {
+    final var appName = config.getProperty("spark.app.name", "ETL-Framework");
+    final var master = config.getProperty("spark.master", "local[*]");
 
-    final SparkConf conf =
+    final var conf =
         new SparkConf()
             .setAppName(appName)
             .setMaster(master)
@@ -68,7 +64,7 @@ public final class SparkConfig {
     // Add cloud-specific configurations
     addCloudConfiguration(conf);
 
-    logger.info("Creating Spark session with app name: {} and master: {}", appName, master);
+    log.info("Creating Spark session with app name: {} and master: {}", appName, master);
 
     return SparkSession.builder().config(conf).getOrCreate();
   }
@@ -78,8 +74,8 @@ public final class SparkConfig {
    *
    * @param conf The SparkConf to add the configuration to.
    */
-  private static void addCloudConfiguration(final SparkConf conf) {
-    final String cloudProvider = config.getProperty("cloud.provider", "local");
+  private void addCloudConfiguration(final SparkConf conf) {
+    final var cloudProvider = config.getProperty("cloud.provider", "local");
 
     switch (cloudProvider.toLowerCase()) {
       case "aws":
@@ -92,7 +88,7 @@ public final class SparkConfig {
         addAzureConfiguration(conf);
         break;
       default:
-        logger.info("Using local configuration");
+        log.info("Using local configuration");
     }
   }
 
@@ -101,21 +97,21 @@ public final class SparkConfig {
    *
    * @param conf The SparkConf to add the configuration to.
    */
-  private static void addAWSConfiguration(final SparkConf conf) {
+  private void addAWSConfiguration(final SparkConf conf) {
     conf.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
     conf.set(
         "spark.hadoop.fs.s3a.aws.credentials.provider",
         "com.amazonaws.auth.DefaultAWSCredentialsProviderChain");
 
-    final String accessKey = config.getProperty("aws.access.key");
-    final String secretKey = config.getProperty("aws.secret.key");
+    final var accessKey = config.getProperty("aws.access.key");
+    final var secretKey = config.getProperty("aws.secret.key");
 
     if (accessKey != null && secretKey != null) {
       conf.set("spark.hadoop.fs.s3a.access.key", accessKey);
       conf.set("spark.hadoop.fs.s3a.secret.key", secretKey);
     }
 
-    logger.info("AWS configuration applied");
+    log.info("AWS configuration applied");
   }
 
   /**
@@ -123,8 +119,8 @@ public final class SparkConfig {
    *
    * @param conf The SparkConf to add the configuration to.
    */
-  private static void addGCPConfiguration(final SparkConf conf) {
-    final String serviceAccountKey = config.getProperty("gcp.service.account.key");
+  private void addGCPConfiguration(final SparkConf conf) {
+    final var serviceAccountKey = config.getProperty("gcp.service.account.key");
     if (serviceAccountKey != null) {
       conf.set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", serviceAccountKey);
     }
@@ -134,7 +130,7 @@ public final class SparkConfig {
         "spark.hadoop.fs.AbstractFileSystem.gs.impl",
         "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS");
 
-    logger.info("GCP configuration applied");
+    log.info("GCP configuration applied");
   }
 
   /**
@@ -142,9 +138,9 @@ public final class SparkConfig {
    *
    * @param conf The SparkConf to add the configuration to.
    */
-  private static void addAzureConfiguration(final SparkConf conf) {
-    final String storageAccount = config.getProperty("azure.storage.account");
-    final String accessKey = config.getProperty("azure.storage.access.key");
+  private void addAzureConfiguration(final SparkConf conf) {
+    final var storageAccount = config.getProperty("azure.storage.account");
+    final var accessKey = config.getProperty("azure.storage.access.key");
 
     if (storageAccount != null && accessKey != null) {
       conf.set(
@@ -153,11 +149,11 @@ public final class SparkConfig {
           accessKey);
     }
 
-    logger.info("Azure configuration applied");
+    log.info("Azure configuration applied");
   }
 
   /** Closes the existing SparkSession if it's running. */
-  public static void closeSparkSession() {
+  public void closeSparkSession() {
     if (sparkSession != null) {
       sparkSession.close();
       sparkSession = null;

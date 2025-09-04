@@ -15,11 +15,14 @@
 */
 package org.apn.etl.core.exception;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * Exception thrown during data transformation
  *
  * @author Amit Prakash Nema
  */
+@EqualsAndHashCode(callSuper = true)
 public class TransformationException extends ETLException {
 
   private static final long serialVersionUID = 1L;

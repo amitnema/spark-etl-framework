@@ -18,13 +18,13 @@ package org.apn.etl.core.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Utility class for common ETL operations.
@@ -34,14 +34,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public final class ETLUtils {
-  private static final Logger logger = LoggerFactory.getLogger(ETLUtils.class);
-  private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-  private static final ObjectMapper jsonMapper = new ObjectMapper();
-
-  private ETLUtils() {
-    // private constructor to hide the implicit public one
-  }
+@UtilityClass
+@Slf4j
+public class ETLUtils {
+  private final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+  private final ObjectMapper jsonMapper = new ObjectMapper();
 
   /**
    * Loads YAML configuration from the classpath and deserializes to the specified class.
@@ -52,9 +49,8 @@ public final class ETLUtils {
    * @return deserialized config object
    * @throws IOException if resource not found or parsing fails
    */
-  public static <T> T loadYamlConfig(final String resourcePath, final Class<T> clazz)
-      throws IOException {
-    try (InputStream is = ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
+  public <T> T loadYamlConfig(final String resourcePath, final Class<T> clazz) throws IOException {
+    try (var is = ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
       if (is == null) {
         throw new IOException("Resource not found: " + resourcePath);
       }
@@ -70,8 +66,7 @@ public final class ETLUtils {
    * @throws IOException if resource not found or parsing fails
    */
   @SuppressWarnings("unchecked")
-  public static Map<String, Object> loadYamlConfigAsMap(final String resourcePath)
-      throws IOException {
+  public Map<String, Object> loadYamlConfigAsMap(final String resourcePath) throws IOException {
     return loadYamlConfig(resourcePath, Map.class);
   }
 
@@ -81,28 +76,28 @@ public final class ETLUtils {
    * @param object object to convert
    * @return JSON string
    */
-  public static String toJsonString(final Object object) {
+  public String toJsonString(final Object object) {
     try {
       return jsonMapper.writeValueAsString(object);
     } catch (final Exception e) {
-      logger.error("Error converting object to JSON", e);
+      log.error("Error converting object to JSON", e);
       return "{}";
     }
   }
 
   /** Generate timestamp string for file naming */
-  public static String getTimestampString() {
+  public String getTimestampString() {
     return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
   }
 
   /** Generate timestamp string with custom format */
-  public static String getTimestampString(final String format) {
+  public String getTimestampString(final String format) {
     return new SimpleDateFormat(format).format(new Date());
   }
 
   /** Safely get nested value from Map */
   @SuppressWarnings("unchecked")
-  public static <T> T getNestedValue(
+  public <T> T getNestedValue(
       final Map<String, Object> map, final String path, final T defaultValue) {
     final String[] keys = path.split("\\.");
     Object current = map;
@@ -118,18 +113,18 @@ public final class ETLUtils {
     try {
       return current != null ? (T) current : defaultValue;
     } catch (final ClassCastException e) {
-      logger.warn("Type cast error for path: {}, returning default value", path);
+      log.warn("Type cast error for path: {}, returning default value", path);
       return defaultValue;
     }
   }
 
   /** Check if string is null or empty */
-  public static boolean isEmpty(final String str) {
+  public boolean isEmpty(final String str) {
     return str == null || str.trim().isEmpty();
   }
 
   /** Check if string is not null and not empty */
-  public static boolean isNotEmpty(final String str) {
+  public boolean isNotEmpty(final String str) {
     return !isEmpty(str);
   }
 
@@ -141,7 +136,10 @@ public final class ETLUtils {
    * @param <V> The type of the values in the map.
    * @return A new map with the same keys and string representations of the values.
    */
-  public static <K, V> Map<K, String> toStringMap(final Map<K, V> inputMap) {
+  public <K, V> Map<K, String> toStringMap(final Map<K, V> inputMap) {
+    if (inputMap == null) {
+      return Collections.emptyMap();
+    }
     return inputMap.entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.valueOf(entry.getValue())));
   }

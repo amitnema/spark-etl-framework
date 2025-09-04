@@ -15,14 +15,14 @@
 */
 package org.apn.etl.core.factory;
 
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apn.etl.core.io.DataReader;
 import org.apn.etl.core.io.DataWriter;
 import org.apn.etl.core.io.DatabaseDataReader;
 import org.apn.etl.core.io.DatabaseDataWriter;
 import org.apn.etl.core.io.FileDataReader;
 import org.apn.etl.core.io.FileDataWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Factory for creating data readers and writers. This class provides static methods to instantiate
@@ -30,12 +30,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
-public final class IOFactory {
-  private static final Logger logger = LoggerFactory.getLogger(IOFactory.class);
-
-  private IOFactory() {
-    // private constructor to hide the implicit public one
-  }
+@UtilityClass
+@Slf4j
+public class IOFactory {
 
   /**
    * Creates a {@link DataReader} instance based on the specified type.
@@ -44,8 +41,8 @@ public final class IOFactory {
    * @return A {@link DataReader} instance.
    * @throws IllegalArgumentException if the reader type is not supported.
    */
-  public static DataReader createReader(final String type) {
-    logger.info("Creating reader for type: {}", type);
+  public DataReader createReader(final String type) {
+    log.info("Creating reader for type: {}", type);
 
     switch (type.toLowerCase()) {
       case "file":
@@ -66,8 +63,8 @@ public final class IOFactory {
    * @return A {@link DataWriter} instance.
    * @throws IllegalArgumentException if the writer type is not supported.
    */
-  public static DataWriter createWriter(final String type) {
-    logger.info("Creating writer for type: {}", type);
+  public DataWriter createWriter(final String type) {
+    log.info("Creating writer for type: {}", type);
 
     switch (type.toLowerCase()) {
       case "file":

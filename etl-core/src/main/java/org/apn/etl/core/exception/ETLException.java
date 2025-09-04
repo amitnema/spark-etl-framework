@@ -15,12 +15,15 @@
 */
 package org.apn.etl.core.exception;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * Base exception class for the ETL framework. This is the general exception thrown for errors
  * during the ETL process.
  *
  * @author Amit Prakash Nema
  */
+@EqualsAndHashCode(callSuper = true)
 public class ETLException extends Exception {
 
   private static final long serialVersionUID = 1L;

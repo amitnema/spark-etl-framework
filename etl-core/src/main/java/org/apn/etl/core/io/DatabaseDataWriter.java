@@ -16,20 +16,19 @@
 package org.apn.etl.core.io;
 
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
 import org.apn.etl.core.model.OutputConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Database data writer implementation.
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public class DatabaseDataWriter implements DataWriter {
-  private static final Logger logger = LoggerFactory.getLogger(DatabaseDataWriter.class);
 
   /**
    * Writes a Spark Dataset to a database table.
@@ -40,8 +39,8 @@ public class DatabaseDataWriter implements DataWriter {
    */
   @Override
   public void write(final Dataset<Row> dataset, final OutputConfig config) {
-    final String connectionString = config.getConnectionString();
-    final String tableName = config.getPath(); // Using path as table name
+    final var connectionString = config.getConnectionString();
+    final var tableName = config.getPath(); // Using path as table name
     final SaveMode mode = getSaveMode(config.getMode());
 
     if (connectionString == null || connectionString.isEmpty()) {
@@ -52,7 +51,7 @@ public class DatabaseDataWriter implements DataWriter {
       throw new IllegalArgumentException("Table name is required for database writer");
     }
 
-    logger.info("Writing to database table: {} with mode: {}", tableName, mode);
+    log.info("Writing to database table: {} with mode: {}", tableName, mode);
 
     final Properties connectionProps = new Properties();
 

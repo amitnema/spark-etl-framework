@@ -17,6 +17,7 @@ package org.apn.etl.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -40,12 +41,9 @@ import org.apn.etl.core.validation.ValidationResult;
  * @author Amit Prakash Nema
  */
 @Slf4j
+@RequiredArgsConstructor
 public final class ETLEngine {
   private final ETLJobConfig jobConfig;
-
-  public ETLEngine(final ETLJobConfig jobConfig) {
-    this.jobConfig = jobConfig;
-  }
 
   /**
    * Execute the ETL job

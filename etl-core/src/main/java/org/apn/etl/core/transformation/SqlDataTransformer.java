@@ -19,7 +19,6 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
 import org.apn.etl.core.config.SparkConfig;
 
 /**
@@ -49,10 +48,10 @@ public final class SqlDataTransformer extends AbstractDataTransformer {
   @Override
   protected Dataset<Row> doTransform(
       final Dataset<Row> input, final Map<String, Object> parameters) {
-    final SparkSession spark = SparkConfig.getSparkSession();
+    final var spark = SparkConfig.getSparkSession();
 
-    final String sql = getParameter(parameters, "sql", "");
-    final String tempViewName = getParameter(parameters, "tempViewName", "input_data");
+    final var sql = getParameter(parameters, "sql", "");
+    final var tempViewName = getParameter(parameters, "tempViewName", "input_data");
 
     if (sql.isEmpty()) {
       throw new IllegalArgumentException("SQL query is required for SqlDataTransformer");

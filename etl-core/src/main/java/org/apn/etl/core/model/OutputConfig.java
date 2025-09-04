@@ -15,6 +15,7 @@
 */
 package org.apn.etl.core.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,6 @@ public class OutputConfig {
   private String path;
   private String connectionString;
   private String mode; // overwrite, append, ignore, error
-  private Map<String, Object> options = com.google.common.collect.Maps.newHashMap();
+  @Builder.Default private Map<String, Object> options = new HashMap<>();
   private PartitionConfig partition;
 }

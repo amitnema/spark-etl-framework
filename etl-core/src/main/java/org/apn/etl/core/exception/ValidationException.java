@@ -15,6 +15,8 @@
 */
 package org.apn.etl.core.exception;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apn.etl.core.validation.ValidationResult;
 
 /**
@@ -22,6 +24,8 @@ import org.apn.etl.core.validation.ValidationResult;
  *
  * @author Amit Prakash Nema
  */
+@Getter
+@EqualsAndHashCode(callSuper = true)
 public class ValidationException extends ETLException {
 
   private static final long serialVersionUID = 1L;
@@ -30,9 +34,5 @@ public class ValidationException extends ETLException {
   public ValidationException(final String message, final ValidationResult validationResult) {
     super(message);
     this.validationResult = validationResult;
-  }
-
-  public ValidationResult getValidationResult() {
-    return validationResult;
   }
 }
