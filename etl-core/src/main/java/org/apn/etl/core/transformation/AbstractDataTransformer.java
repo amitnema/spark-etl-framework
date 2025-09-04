@@ -16,10 +16,9 @@
 package org.apn.etl.core.transformation;
 
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for data transformers in the ETL framework.
@@ -30,13 +29,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public abstract class AbstractDataTransformer implements DataTransformer {
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
-
   @Override
   public final Dataset<Row> transform(
       final Dataset<Row> input, final Map<String, Object> parameters) {
-    logger.info("Starting transformation: {}", getClass().getSimpleName());
+    log.info("Starting transformation: {}", getClass().getSimpleName());
 
     // Pre-transformation hook
     preTransform(input, parameters);
@@ -47,7 +45,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
     // Post-transformation hook
     postTransform(result, parameters);
 
-    logger.info("Transformation completed: {}", getClass().getSimpleName());
+    log.info("Transformation completed: {}", getClass().getSimpleName());
     return result;
   }
 
@@ -60,7 +58,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    */
   protected void preTransform(final Dataset<Row> input, final Map<String, Object> parameters) {
     // Default implementation does nothing
-    logger.debug("Pre-transformation hook executed");
+    log.debug("Pre-transformation hook executed");
   }
 
   /**
@@ -81,7 +79,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
    */
   protected void postTransform(final Dataset<Row> output, final Map<String, Object> parameters) {
     // Default implementation does nothing
-    logger.debug("Post-transformation hook executed");
+    log.debug("Post-transformation hook executed");
   }
 
   /** Utility method to get parameter value with default */
@@ -95,7 +93,7 @@ public abstract class AbstractDataTransformer implements DataTransformer {
     try {
       return (T) value;
     } catch (final ClassCastException e) {
-      logger.warn("Parameter {} has wrong type, using default value", key);
+      log.warn("Parameter {} has wrong type, using default value", key);
       return defaultValue;
     }
   }

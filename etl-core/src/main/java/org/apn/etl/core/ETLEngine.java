@@ -17,6 +17,7 @@ package org.apn.etl.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apn.etl.core.config.SparkConfig;
@@ -32,17 +33,14 @@ import org.apn.etl.core.model.OutputConfig;
 import org.apn.etl.core.transformation.DataTransformer;
 import org.apn.etl.core.validation.DefaultDataValidator;
 import org.apn.etl.core.validation.ValidationResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Main ETL processing engine
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public final class ETLEngine {
-  private static final Logger logger = LoggerFactory.getLogger(ETLEngine.class);
-
   private final ETLJobConfig jobConfig;
 
   public ETLEngine(final ETLJobConfig jobConfig) {
@@ -55,7 +53,7 @@ public final class ETLEngine {
    * @throws ETLException if the job fails
    */
   public void execute() throws ETLException {
-    logger.info("Starting ETL job: {}", jobConfig.getJobName());
+    log.info("Starting ETL job: {}", jobConfig.getJobName());
 
     try {
       // Step 1: Read input data
@@ -73,10 +71,10 @@ public final class ETLEngine {
       // Step 5: Write output data
       writeOutputData(transformedData);
 
-      logger.info("ETL job completed successfully: {}", jobConfig.getJobName());
+      log.info("ETL job completed successfully: {}", jobConfig.getJobName());
 
     } catch (final Exception e) {
-      logger.error("ETL job failed: {}", jobConfig.getJobName(), e);
+      log.error("ETL job failed: {}", jobConfig.getJobName(), e);
       throw new ETLException("ETL job execution failed", e);
     } finally {
       // Cleanup resources
@@ -85,13 +83,13 @@ public final class ETLEngine {
   }
 
   private Map<String, Dataset<Row>> readInputData() throws ETLException {
-    logger.info("Reading input data for {} input sources", jobConfig.getInputs().size());
+    log.info("Reading input data for {} input sources", jobConfig.getInputs().size());
 
     final Map<String, Dataset<Row>> datasets = new HashMap<>();
 
     for (final InputConfig inputConfig : jobConfig.getInputs()) {
       try {
-        logger.info("Reading input: {}", inputConfig.getName());
+        log.info("Reading input: {}", inputConfig.getName());
 
         final DataReader reader = IOFactory.createReader(inputConfig.getType());
         final Dataset<Row> dataset = reader.read(inputConfig);
@@ -101,7 +99,7 @@ public final class ETLEngine {
 
         datasets.put(inputConfig.getName(), dataset);
 
-        logger.info(
+        log.info(
             "Successfully read input: {} with {} records", inputConfig.getName(), dataset.count());
 
       } catch (final Exception e) {
@@ -115,28 +113,28 @@ public final class ETLEngine {
   private void validateInputData(final Map<String, Dataset<Row>> datasets)
       throws ValidationException {
     if (jobConfig.getValidation() == null || !jobConfig.getValidation().isEnabled()) {
-      logger.info("Input validation is disabled, skipping validation");
+      log.info("Input validation is disabled, skipping validation");
       return;
     }
 
-    logger.info("Validating input data");
+    log.info("Validating input data");
 
     for (final Map.Entry<String, Dataset<Row>> entry : datasets.entrySet()) {
       final DefaultDataValidator validator = new DefaultDataValidator(jobConfig.getValidation());
       final ValidationResult result = validator.validate(entry.getValue());
 
       if (!result.isValid()) {
-        logger.error("Input validation failed for: {}", entry.getKey());
+        log.error("Input validation failed for: {}", entry.getKey());
         throw new ValidationException("Input validation failed", result);
       }
 
-      logger.info("Input validation passed for: {}", entry.getKey());
+      log.info("Input validation passed for: {}", entry.getKey());
     }
   }
 
   private Dataset<Row> transformData(final Map<String, Dataset<Row>> inputDatasets)
       throws ETLException {
-    logger.info("Starting data transformation");
+    log.info("Starting data transformation");
 
     try {
       final String transformerClass = jobConfig.getTransformation().getClassName();
@@ -156,7 +154,7 @@ public final class ETLEngine {
 
       final Dataset<Row> transformed = transformer.transform(primaryDataset, parameters);
 
-      logger.info("Data transformation completed successfully");
+      log.info("Data transformation completed successfully");
       return transformed;
 
     } catch (final Exception e) {
@@ -166,34 +164,34 @@ public final class ETLEngine {
 
   private void validateTransformedData(final Dataset<Row> dataset) throws ValidationException {
     if (jobConfig.getValidation() == null || !jobConfig.getValidation().isEnabled()) {
-      logger.info("Output validation is disabled, skipping validation");
+      log.info("Output validation is disabled, skipping validation");
       return;
     }
 
-    logger.info("Validating transformed data");
+    log.info("Validating transformed data");
 
     final DefaultDataValidator validator = new DefaultDataValidator(jobConfig.getValidation());
     final ValidationResult result = validator.validate(dataset);
 
     if (!result.isValid()) {
-      logger.error("Output validation failed");
+      log.error("Output validation failed");
       throw new ValidationException("Output validation failed", result);
     }
 
-    logger.info("Output validation passed");
+    log.info("Output validation passed");
   }
 
   private void writeOutputData(final Dataset<Row> dataset) throws ETLException {
-    logger.info("Writing output data to {} destinations", jobConfig.getOutputs().size());
+    log.info("Writing output data to {} destinations", jobConfig.getOutputs().size());
 
     for (final OutputConfig outputConfig : jobConfig.getOutputs()) {
       try {
-        logger.info("Writing output: {}", outputConfig.getName());
+        log.info("Writing output: {}", outputConfig.getName());
 
         final DataWriter writer = IOFactory.createWriter(outputConfig.getType());
         writer.write(dataset, outputConfig);
 
-        logger.info("Successfully wrote output: {}", outputConfig.getName());
+        log.info("Successfully wrote output: {}", outputConfig.getName());
 
       } catch (final Exception e) {
         throw new ETLException("Failed to write output: " + outputConfig.getName(), e);
@@ -202,7 +200,7 @@ public final class ETLEngine {
   }
 
   private void cleanup() {
-    logger.info("Cleaning up resources");
+    log.info("Cleaning up resources");
     SparkConfig.closeSparkSession();
   }
 }

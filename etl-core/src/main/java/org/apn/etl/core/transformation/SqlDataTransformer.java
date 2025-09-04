@@ -16,6 +16,7 @@
 package org.apn.etl.core.transformation;
 
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -34,6 +35,7 @@ import org.apn.etl.core.config.SparkConfig;
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 public final class SqlDataTransformer extends AbstractDataTransformer {
   /**
    * Executes the SQL transformation on the input dataset.
@@ -56,8 +58,8 @@ public final class SqlDataTransformer extends AbstractDataTransformer {
       throw new IllegalArgumentException("SQL query is required for SqlDataTransformer");
     }
 
-    logger.info("Executing SQL transformation with temp view: {}", tempViewName);
-    logger.debug("SQL Query: {}", sql);
+    log.info("Executing SQL transformation with temp view: {}", tempViewName);
+    log.debug("SQL Query: {}", sql);
 
     // Create temporary view
     input.createOrReplaceTempView(tempViewName);
@@ -66,7 +68,7 @@ public final class SqlDataTransformer extends AbstractDataTransformer {
       // Execute SQL query
       return spark.sql(sql);
     } catch (final Exception e) {
-      logger.error("Error executing SQL query", e);
+      log.error("Error executing SQL query", e);
       throw new RuntimeException("SQL transformation failed", e);
     }
   }

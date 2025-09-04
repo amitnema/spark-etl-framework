@@ -15,8 +15,11 @@
 */
 package org.apn.etl.core.model;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Output configuration model for ETL jobs.
@@ -26,6 +29,10 @@ import java.util.Map;
  *
  * @author Amit Prakash Nema
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OutputConfig {
   private String name;
   private String type; // file, database, stream, etc.
@@ -33,167 +40,6 @@ public class OutputConfig {
   private String path;
   private String connectionString;
   private String mode; // overwrite, append, ignore, error
-  private Map<String, Object> options = Maps.newHashMap();
+  private Map<String, Object> options = com.google.common.collect.Maps.newHashMap();
   private PartitionConfig partition;
-
-  // Constructors
-  public OutputConfig() {}
-
-  public OutputConfig(
-      final String name,
-      final String type,
-      final String format,
-      final String path,
-      final String mode) {
-    this.name = name;
-    this.type = type;
-    this.format = format;
-    this.path = path;
-    this.mode = mode;
-  }
-
-  // Getters and Setters
-  /**
-   * Gets the output name.
-   *
-   * @return output name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Sets the output name.
-   *
-   * @param name output name
-   */
-  public void setName(final String name) {
-    this.name = name;
-  }
-
-  /**
-   * Gets the output type (file, database, stream, etc.).
-   *
-   * @return output type
-   */
-  public String getType() {
-    return type;
-  }
-
-  /**
-   * Sets the output type.
-   *
-   * @param type output type
-   */
-  public void setType(final String type) {
-    this.type = type;
-  }
-
-  /**
-   * Gets the output format (parquet, json, csv, etc.).
-   *
-   * @return output format
-   */
-  public String getFormat() {
-    return format;
-  }
-
-  /**
-   * Sets the output format.
-   *
-   * @param format output format
-   */
-  public void setFormat(final String format) {
-    this.format = format;
-  }
-
-  /**
-   * Gets the output path.
-   *
-   * @return output path
-   */
-  public String getPath() {
-    return path;
-  }
-
-  /**
-   * Sets the output path.
-   *
-   * @param path output path
-   */
-  public void setPath(final String path) {
-    this.path = path;
-  }
-
-  /**
-   * Gets the connection string for database outputs.
-   *
-   * @return connection string
-   */
-  public String getConnectionString() {
-    return connectionString;
-  }
-
-  /**
-   * Sets the connection string for database outputs.
-   *
-   * @param connectionString connection string
-   */
-  public void setConnectionString(final String connectionString) {
-    this.connectionString = connectionString;
-  }
-
-  /**
-   * Gets the output mode (overwrite, append, ignore, error).
-   *
-   * @return output mode
-   */
-  public String getMode() {
-    return mode;
-  }
-
-  /**
-   * Sets the output mode.
-   *
-   * @param mode output mode
-   */
-  public void setMode(final String mode) {
-    this.mode = mode;
-  }
-
-  /**
-   * Gets additional output options.
-   *
-   * @return options map
-   */
-  public Map<String, Object> getOptions() {
-    return options;
-  }
-
-  /**
-   * Sets additional output options.
-   *
-   * @param options options map
-   */
-  public void setOptions(final Map<String, Object> options) {
-    this.options = options;
-  }
-
-  /**
-   * Gets the partition configuration for the output.
-   *
-   * @return partition config
-   */
-  public PartitionConfig getPartition() {
-    return partition;
-  }
-
-  /**
-   * Sets the partition configuration for the output.
-   *
-   * @param partition partition config
-   */
-  public void setPartition(final PartitionConfig partition) {
-    this.partition = partition;
-  }
 }
