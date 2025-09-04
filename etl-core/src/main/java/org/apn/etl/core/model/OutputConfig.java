@@ -15,6 +15,8 @@
 */
 package org.apn.etl.core.model;
 
+import com.google.common.collect.Maps;
+
 import java.util.Map;
 
 /**
@@ -32,7 +34,7 @@ public class OutputConfig {
   private String path;
   private String connectionString;
   private String mode; // overwrite, append, ignore, error
-  private Map<String, Object> options;
+  private Map<String, Object> options = Maps.newHashMap();
   private PartitionConfig partition;
 
   // Constructors

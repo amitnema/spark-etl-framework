@@ -28,6 +28,7 @@
     <!-- Spark logging -->
     <logger name="org.apache.spark" level="WARN" />
     <logger name="org.apache.hadoop" level="WARN" />
+    <logger name="org.sparkproject" level="WARN" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE" />

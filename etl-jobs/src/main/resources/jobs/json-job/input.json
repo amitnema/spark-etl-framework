@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "age": 25,
+    "city": "Stuttgart",
+    "date_column": "2024-06-20T12:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "age": 30,
+    "city": "Frankfurt",
+    "date_column": "2024-06-20T12:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "name": "Charlie",
+    "age": 35,
+    "city": "Berlin",
+    "date_column": "2024-06-20T12:00:00Z",
+    "status": "inactive"
+  },
+  {
+    "id": 4,
+    "name": "David",
+    "age": 40,
+    "city": "Munich",
+    "date_column": "2024-06-20T12:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": 5,
+    "name": "Eve",
+    "age": 28,
+    "city": "Hamburg",
+    "date_column": "2024-06-20T12:00:00Z",
+    "status": "inactive"
+  }
+]
