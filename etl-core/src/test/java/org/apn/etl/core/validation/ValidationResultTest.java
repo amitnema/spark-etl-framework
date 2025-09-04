@@ -28,7 +28,7 @@ class ValidationResultTest {
   @Test
   void testValidationResultCreation() {
     // Given
-    ValidationResult result = new ValidationResult(true);
+    ValidationResult result = ValidationResult.builder().isValid(true).build();
 
     // Then
     assertTrue(result.isValid());

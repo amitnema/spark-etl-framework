@@ -17,23 +17,21 @@ package org.apn.etl.jobs.sample;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 class SampleETLJobTest {
-  private static final Logger logger = LoggerFactory.getLogger(SampleETLJobTest.class);
-
   @Test
   void testParseArgumentsWithConfigAndJobName() throws ParseException {
     String[] args = {"--config", "test-config.yaml", "--job-name", "TestJob"};
     CommandLine cmd = SampleETLJob.parseArguments(args);
     assertEquals("test-config.yaml", cmd.getOptionValue("config"));
     assertEquals("TestJob", cmd.getOptionValue("job-name"));
-    logger.info("Parsed arguments successfully");
+    log.info("Parsed arguments successfully");
   }
 
   @Test
@@ -49,13 +47,13 @@ class SampleETLJobTest {
             fail(e);
           }
         });
-    logger.info("Help argument triggers exit");
+    log.info("Help argument triggers exit");
   }
 
   @Test
   void testLoadJobConfig() throws Exception {
     String configPath = "jobs/json-job/job-config.yaml";
     assertNotNull(SampleETLJob.loadJobConfig(configPath));
-    logger.info("Loaded job config successfully");
+    log.info("Loaded job config successfully");
   }
 }

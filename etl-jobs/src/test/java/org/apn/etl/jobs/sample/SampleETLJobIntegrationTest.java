@@ -22,18 +22,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The type Sample etl job integration test.
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 class SampleETLJobIntegrationTest {
-  private static final Logger logger = LoggerFactory.getLogger(SampleETLJobIntegrationTest.class);
-
   /**
    * Test etl job execution with json input.
    *
@@ -49,7 +47,7 @@ class SampleETLJobIntegrationTest {
     cleanDir(outputDir);
     // Run the ETL job
     SampleETLJob.main(args);
-    logger.info("ETL job executed with config: {}", configPath);
+    log.info("ETL job executed with config: {}", configPath);
     // Check that output files are created
     File[] outputFiles;
     try (var paths = Files.walk(Paths.get(outputDir))) {
@@ -75,7 +73,7 @@ class SampleETLJobIntegrationTest {
       }
     }
     assertTrue(foundActive, "Output should contain 'active' records");
-    logger.info("Integration test for ETL job passed");
+    log.info("Integration test for ETL job passed");
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")

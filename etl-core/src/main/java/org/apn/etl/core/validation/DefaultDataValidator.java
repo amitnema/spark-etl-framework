@@ -44,7 +44,7 @@ public final class DefaultDataValidator implements DataValidator {
   public ValidationResult validate(final Dataset<Row> dataset) {
     if (!config.isEnabled()) {
       logger.info("Validation is disabled, skipping validation");
-      return new ValidationResult(true);
+      return ValidationResult.builder().isValid(true).build();
     }
 
     final ValidationResult result = new ValidationResult();

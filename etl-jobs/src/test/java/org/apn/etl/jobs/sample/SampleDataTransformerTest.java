@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.collect.Lists;
 import java.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
@@ -29,16 +30,14 @@ import org.apache.spark.sql.types.StructType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The type Sample data transformer test.
  *
  * @author Amit Prakash Nema
  */
+@Slf4j
 class SampleDataTransformerTest {
-  private static final Logger logger = LoggerFactory.getLogger(SampleDataTransformerTest.class);
   private static SparkSession spark;
 
   /** Sets up. */
@@ -88,7 +87,7 @@ class SampleDataTransformerTest {
     assertTrue(Arrays.asList(result.columns()).contains("year"));
     assertTrue(Arrays.asList(result.columns()).contains("month"));
     assertTrue(Arrays.asList(result.columns()).contains("processed_timestamp"));
-    logger.info("Transformation test with valid data passed");
+    log.info("Transformation test with valid data passed");
   }
 
   /** Test transform empty data. */
@@ -99,6 +98,6 @@ class SampleDataTransformerTest {
     Map<String, Object> params = new HashMap<>();
     Dataset<Row> result = transformer.transform(df, params);
     assertEquals(0, result.count());
-    logger.info("Transformation test with empty data passed");
+    log.info("Transformation test with empty data passed");
   }
 }

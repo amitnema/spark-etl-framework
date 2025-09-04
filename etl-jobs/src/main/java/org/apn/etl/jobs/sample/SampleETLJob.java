@@ -16,6 +16,7 @@
 package org.apn.etl.jobs.sample;
 
 import java.io.IOException;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -35,17 +36,15 @@ import org.apn.etl.core.utils.ETLUtils;
  * @author Amit Prakash Nema
  */
 @Slf4j
-public final class SampleETLJob {
-  private SampleETLJob() {
-    // private constructor to hide the implicit public one
-  }
+@UtilityClass
+public class SampleETLJob {
 
   /**
    * Entry point for the program.
    *
    * @param args the args
    */
-  public static void main(final String[] args) {
+  public void main(final String[] args) {
     try {
       // Parse command line arguments
       final CommandLine cmd = parseArguments(args);
@@ -71,7 +70,7 @@ public final class SampleETLJob {
     }
   }
 
-  public static CommandLine parseArguments(final String[] args) throws ParseException {
+  public CommandLine parseArguments(final String[] args) throws ParseException {
     final Options options = new Options();
 
     options.addOption(
@@ -98,7 +97,7 @@ public final class SampleETLJob {
     return cmd;
   }
 
-  public static ETLJobConfig loadJobConfig(final String configPath) throws IOException {
+  public ETLJobConfig loadJobConfig(final String configPath) throws IOException {
     log.info("Loading job configuration from: {}", configPath);
     return ETLUtils.loadYamlConfig(configPath, ETLJobConfig.class);
   }
