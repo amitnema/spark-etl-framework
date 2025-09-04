@@ -6,7 +6,7 @@ inputs:
   - name: "source_data"
     type: "file"
     format: "json"
-    path: "etl-jobs/target/classes/jobs/json-job/input.json"
+    path: "src/test/resources/jobs/json-job/input.json"
     options:
       multiline: true
       timestampFormat: "yyyy-MM-dd HH:mm:ss"
@@ -22,7 +22,7 @@ outputs:
   - name: "processed_data"
     type: "file"
     format: "json"
-    path: "etl-jobs/target/classes/jobs/json-job/output"
+    path: "target/classes/jobs/json-job/output"
     mode: "overwrite"
     partition:
       columns: ["year", "month"]

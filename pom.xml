@@ -43,6 +43,7 @@
     <jackson.version>2.15.2</jackson.version>
     <slf4j.version>2.0.7</slf4j.version>
     <logback.version>1.4.11</logback.version>
+    <lombok.version>1.18.38</lombok.version>
     <junit.version>5.9.3</junit.version>
     <mockito.version>5.4.0</mockito.version>
     <testcontainers.version>1.18.3</testcontainers.version>
@@ -153,6 +154,13 @@
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+      </dependency>
 
       <!-- Test Dependencies -->
       <dependency>
@@ -192,6 +200,13 @@
           <configuration>
             <source>${java.version}</source>
             <target>${java.version}</target>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+            </annotationProcessorPaths>
           </configuration>
         </plugin>
         <plugin>

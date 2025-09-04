@@ -29,8 +29,8 @@ import org.apn.etl.core.transformation.AbstractDataTransformer;
 public final class SampleDataTransformer extends AbstractDataTransformer {
 
   private static final String PROCESSED_TIMESTAMP_COL = "processed_timestamp";
-    private static final String YEAR_COL = "year";
-    private static final String MONTH_COL = "month";
+  private static final String YEAR_COL = "year";
+  private static final String MONTH_COL = "month";
   private static final String DATE_COLUMN_COL = "date_column";
   private static final String STATUS_COL = "status";
   private static final String ACTIVE_STATUS = "active";
@@ -44,8 +44,8 @@ public final class SampleDataTransformer extends AbstractDataTransformer {
     final Dataset<Row> transformed =
         input
             .withColumn(PROCESSED_TIMESTAMP_COL, functions.current_timestamp())
-                .withColumn(YEAR_COL, functions.year(functions.col(DATE_COLUMN_COL)))
-                .withColumn(MONTH_COL, functions.month(functions.col(DATE_COLUMN_COL)))
+            .withColumn(YEAR_COL, functions.year(functions.col(DATE_COLUMN_COL)))
+            .withColumn(MONTH_COL, functions.month(functions.col(DATE_COLUMN_COL)))
             .filter(functions.col(STATUS_COL).equalTo(ACTIVE_STATUS));
 
     logger.info(
