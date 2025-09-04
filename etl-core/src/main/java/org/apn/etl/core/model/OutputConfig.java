@@ -16,7 +16,6 @@
 package org.apn.etl.core.model;
 
 import com.google.common.collect.Maps;
-
 import java.util.Map;
 
 /**
