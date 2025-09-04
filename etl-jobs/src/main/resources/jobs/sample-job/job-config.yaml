@@ -12,7 +12,7 @@ inputs:
       timestampFormat: "yyyy-MM-dd HH:mm:ss"
 
 transformation:
-  className: "com.etl.jobs.sample.SampleDataTransformer"
+  className: "org.apn.etl.jobs.sample.SampleDataTransformer"
   parameters:
     filterDate: "2023-01-01"
     outputFormat: "processed"

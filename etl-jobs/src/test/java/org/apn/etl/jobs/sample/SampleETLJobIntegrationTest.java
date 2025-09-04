@@ -24,7 +24,11 @@ import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
 
-/** The type Sample etl job integration test. */
+/**
+ * The type Sample etl job integration test.
+ *
+ * @author Amit Prakash Nema
+ */
 class SampleETLJobIntegrationTest {
   /**
    * Test etl job execution with json input.

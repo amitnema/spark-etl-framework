@@ -20,7 +20,7 @@
     </appender>
 
     <!-- ETL Framework specific logging -->
-    <logger name="com.etl" level="DEBUG" additivity="false">
+    <logger name="org.apn.etl" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>

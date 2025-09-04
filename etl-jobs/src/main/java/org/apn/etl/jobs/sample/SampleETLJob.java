@@ -30,7 +30,11 @@ import org.apn.etl.core.utils.ETLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Sample ETL Job implementation */
+/**
+ * Sample ETL Job implementation
+ *
+ * @author Amit Prakash Nema
+ */
 public final class SampleETLJob {
   private static final Logger logger = LoggerFactory.getLogger(SampleETLJob.class);
 
@@ -38,6 +42,11 @@ public final class SampleETLJob {
     // private constructor to hide the implicit public one
   }
 
+  /**
+   * Entry point for the program.
+   *
+   * @param args the args
+   */
   public static void main(final String[] args) {
     try {
       // Parse command line arguments

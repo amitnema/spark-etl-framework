@@ -30,7 +30,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-/** The type Sample data transformer test. */
+/**
+ * The type Sample data transformer test.
+ *
+ * @author Amit Prakash Nema
+ */
 class SampleDataTransformerTest {
   private static SparkSession spark;
 

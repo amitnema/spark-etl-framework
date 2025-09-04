@@ -137,7 +137,7 @@ SPARK_SUBMIT_CMD=(
     --files "${JOB_DIR}/application.properties,${JOB_DIR}/${CONFIG_FILE},${JOB_DIR}/logback.xml"
     --driver-java-options "-Dlogback.configurationFile=logback.xml"
     --conf "spark.executor.extraJavaOptions=-Dlogback.configurationFile=logback.xml"
-    --class "com.etl.jobs.sample.SampleETLJob"
+    --class "org.apn.etl.jobs.sample.SampleETLJob"
     "$JAR_FILE"
     --config "$CONFIG_FILE"
 )
