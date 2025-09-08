@@ -17,6 +17,7 @@ package org.apn.etl.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
@@ -34,6 +35,7 @@ import org.apn.etl.core.model.OutputConfig;
 import org.apn.etl.core.transformation.DataTransformer;
 import org.apn.etl.core.validation.DefaultDataValidator;
 import org.apn.etl.core.validation.ValidationResult;
+import org.slf4j.MDC;
 
 /**
  * Main ETL processing engine
@@ -43,6 +45,7 @@ import org.apn.etl.core.validation.ValidationResult;
 @Slf4j
 @RequiredArgsConstructor
 public final class ETLEngine {
+  public static final String ID = "job_id";
   private final ETLJobConfig jobConfig;
 
   /**
@@ -51,8 +54,8 @@ public final class ETLEngine {
    * @throws ETLException if the job fails
    */
   public void execute() throws ETLException {
+    MDC.put("job_id", UUID.randomUUID().toString());
     log.info("Starting ETL job: {}", jobConfig.getJobName());
-
     try {
       // Step 1: Read input data
       final Map<String, Dataset<Row>> inputDatasets = readInputData();
@@ -76,6 +79,7 @@ public final class ETLEngine {
       throw new ETLException("ETL job execution failed", e);
     } finally {
       // Cleanup resources
+      MDC.remove(ID);
       cleanup();
     }
   }
@@ -133,7 +137,6 @@ public final class ETLEngine {
   private Dataset<Row> transformData(final Map<String, Dataset<Row>> inputDatasets)
       throws ETLException {
     log.info("Starting data transformation");
-
     try {
       final String transformerClass = jobConfig.getTransformation().getClassName();
       final DataTransformer transformer = TransformerFactory.createTransformer(transformerClass);

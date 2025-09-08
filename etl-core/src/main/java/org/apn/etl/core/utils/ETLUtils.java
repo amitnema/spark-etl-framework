@@ -17,6 +17,8 @@ package org.apn.etl.core.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -50,7 +52,10 @@ public class ETLUtils {
    * @throws IOException if resource not found or parsing fails
    */
   public <T> T loadYamlConfig(final String resourcePath, final Class<T> clazz) throws IOException {
-    try (var is = ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
+    try (var is =
+        new File(resourcePath).exists()
+            ? new FileInputStream(resourcePath)
+            : ETLUtils.class.getClassLoader().getResourceAsStream(resourcePath)) {
       if (is == null) {
         throw new IOException("Resource not found: " + resourcePath);
       }

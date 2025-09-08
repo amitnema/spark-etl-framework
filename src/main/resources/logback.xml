@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-
+<configuration debug="false">
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
@@ -19,7 +18,7 @@
     </appender>
     <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/etl-framework.json.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/etl-framework.%d{yyyy-MM-dd}.%i.json.gz</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
@@ -41,18 +40,29 @@
         </encoder>
     </appender>
 
+    <!-- Async wrappers -->
+    <appender name="ASYNC_JSON_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="JSON_CONSOLE"/>
+    </appender>
+    <appender name="ASYNC_JSON_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="JSON_FILE"/>
+    </appender>
+
     <!-- ETL Framework specific logging -->
     <logger name="org.apn.etl" level="DEBUG" additivity="false">
-        <appender-ref ref="JSON_CONSOLE"/>
-        <appender-ref ref="JSON_FILE"/>
+        <appender-ref ref="ASYNC_JSON_CONSOLE"/>
+        <appender-ref ref="ASYNC_JSON_FILE"/>
     </logger>
 
     <!-- Spark logging -->
     <logger name="org.apache.spark" level="WARN"/>
     <logger name="org.apache.hadoop" level="WARN"/>
+    <logger name="org.sparkproject" level="WARN"/>
+    <logger name="org.apache.spark" level="WARN"/>
+    <logger name="org.apache.spark" level="WARN"/>
 
     <root level="INFO">
-        <appender-ref ref="JSON_CONSOLE"/>
-        <appender-ref ref="JSON_FILE"/>
+        <appender-ref ref="ASYNC_JSON_CONSOLE"/>
+        <appender-ref ref="ASYNC_JSON_FILE"/>
     </root>
 </configuration>

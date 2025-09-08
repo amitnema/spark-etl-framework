@@ -39,11 +39,9 @@ class SampleETLJobIntegrationTest {
    */
   @Test
   void testETLJobExecutionWithJsonInput() throws Exception {
-    // set logback configuration file for spark
-    System.setProperty("logback.configurationFile", "src/test/resources/logback-test.xml");
     String configPath = "jobs/json-job/job-config.yaml";
     String[] args = {"--config", configPath, "--job-name", "JsonJobTest"};
-    String outputDir = "target/classes/jobs/json-job/output";
+    String outputDir = SampleETLJob.loadJobConfig(configPath).getOutputs().get(0).getPath();
     cleanDir(outputDir);
     // Run the ETL job
     SampleETLJob.main(args);
